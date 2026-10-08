@@ -5,8 +5,12 @@ export function PreviewBadge() {
   const { t } = useTranslation()
   if (import.meta.env.VITE_API_MODE !== 'mock') return null
   return (
-    <span title={t('preview.note')} className="figures hidden rounded-sheet border border-brass/40 px-2 py-1 text-[11px] text-brass sm:inline">
-      {t('preview.badge')}
+    <span
+      title={t('preview.note')}
+      className="figures inline-flex shrink-0 items-center rounded-sheet border border-brass/50 px-2 py-1 text-[11px] leading-none whitespace-nowrap text-brass"
+    >
+      <span className="sm:hidden">{t('preview.badgeShort')}</span>
+      <span className="hidden sm:inline">{t('preview.badge')}</span>
     </span>
   )
 }

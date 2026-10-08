@@ -11,6 +11,45 @@
     "en": "EN",
     "vi": "VI"
   },
+  "common": {
+    "loading": "Loading",
+    "restoringSession": "Restoring your session",
+    "loadFailed": "This couldn't be loaded.",
+    "retry": "Try again",
+    "close": "Close",
+    "cancel": "Cancel",
+    "dismiss": "Dismiss",
+    "optional": "Optional",
+    "noResults": "Nothing matches these filters.",
+    "correlationId": "Correlation ID",
+    "apply": "Apply",
+    "reset": "Clear filters",
+    "all": "All",
+    "back": "Back",
+    "save": "Save",
+    "yes": "Yes",
+    "no": "No",
+    "copy": "Copy",
+    "copied": "Copied",
+    "print": "Print"
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "home": "SecureBank home",
+    "main": "Main",
+    "overview": "Overview",
+    "accounts": "Accounts",
+    "transfer": "Transfer",
+    "activity": "Activity",
+    "notifications": "Notifications",
+    "notificationsUnread": "Notifications, {{count}} unread",
+    "profile": "Profile & security",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "accountMenu": "Account menu for {{name}}"
+  },
   "login": {
     "band": "Online banking",
     "title": "Sign in to online banking",
@@ -22,15 +61,51 @@
     "submit": "Sign in",
     "submitting": "Signing in…",
     "noAccount": "New customer?",
-    "register": "Open a demo account",
+    "register": "Open a current account",
     "required": "Enter your {{field}}.",
     "demoTitle": "Demo accounts",
-    "demoHint": "Local demo data only. Select a row to fill the form.",
+    "demoHint": "Demo data only. Select a row to fill the form.",
     "colUser": "User",
     "colRole": "Role",
     "colAccount": "Account",
     "useAccount": "Use {{user}}",
-    "backendOffline": "The banking server isn't connected to this preview yet. Sign-in will work once the backend is deployed or when you run it locally with Docker Compose."
+    "footer": "SB-VN · Internal transfers · Double-entry ledger",
+    "backendOffline": "The banking server isn't reachable. If you're running locally, start the backend with Docker Compose and try again."
+  },
+  "register": {
+    "eyebrow": "Account opening",
+    "title": "Open a current account",
+    "subtitle": "We open a VND current account in your name as soon as you register. It starts with a zero balance.",
+    "fullName": "Full name",
+    "fullNamePh": "As on your ID card",
+    "username": "Username",
+    "usernameHint": "3–50 characters: lowercase letters, digits, dot, dash or underscore.",
+    "email": "Email",
+    "password": "Password",
+    "rulesLabel": "Password requirements",
+    "rules": {
+      "length": "8+ characters",
+      "upper": "Uppercase",
+      "lower": "Lowercase",
+      "digit": "Digit",
+      "symbol": "Symbol"
+    },
+    "ruleMet": "met",
+    "ruleNotMet": "not met yet",
+    "phone": "Mobile number",
+    "phoneHint": "9–15 digits, may start with +.",
+    "submit": "Open account",
+    "submitting": "Opening account…",
+    "haveAccount": "Already a customer?",
+    "signIn": "Sign in",
+    "done": "Your account is open. Welcome to SecureBank.",
+    "errors": {
+      "username": "Use 3–50 lowercase letters, digits, dot, dash or underscore.",
+      "password": "The password doesn't meet all the requirements below.",
+      "fullName": "Enter your full name (up to 200 characters).",
+      "email": "Enter a valid email address.",
+      "phone": "Enter 9–15 digits, optionally starting with +."
+    }
   },
   "roles": {
     "CUSTOMER": "Customer",
@@ -39,11 +114,213 @@
     "ADMIN": "Admin"
   },
   "preview": {
-    "badge": "Preview build",
-    "note": "UI under construction · data is not real"
+    "badge": "Preview · sample data",
+    "badgeShort": "Preview",
+    "note": "This preview runs without a bank server. All names, balances and transfers are sample data kept in this browser tab.",
+    "reset": "Reset preview data",
+    "resetTitle": "Reset preview data?",
+    "resetBody": "All transfers, reviews and changes you made in this tab are discarded and the sample data is restored. You'll be signed out.",
+    "resetConfirm": "Reset and sign out"
   },
   "notFound": {
     "title": "This page doesn't exist",
     "back": "Go to sign-in"
+  },
+  "status": {
+    "toHome": "Back to your portal",
+    "forbiddenTitle": "This area isn't part of your access",
+    "forbiddenBody": "Your role can't open this portal. If you think it should, ask an administrator.",
+    "notFoundBody": "The link may be old or mistyped.",
+    "recordMissing": "Record not found",
+    "recordMissingBody": "It doesn't exist, or it isn't visible to you.",
+    "inProgress": "This section is being built and arrives in the next preview update."
+  },
+  "account": {
+    "passbook": "Passbook",
+    "type": {
+      "CURRENT": "Current account"
+    },
+    "available": "Available balance",
+    "frozenNote": "Frozen. Outgoing transfers are blocked; incoming transfers still arrive.",
+    "openedOn": "Opened {{date}}",
+    "openDetail": "Open account {{number}}",
+    "showNumber": "Show full account number",
+    "hideNumber": "Hide account number"
+  },
+  "accountStatus": {
+    "ACTIVE": "Active",
+    "FROZEN": "Frozen",
+    "CLOSED": "Closed"
+  },
+  "txStatus": {
+    "SUCCESS": "Posted",
+    "PENDING": "Pending",
+    "FAILED": "Failed",
+    "REJECTED": "Rejected"
+  },
+  "stamp": {
+    "POSTED": "Posted",
+    "REJECTED": "Rejected",
+    "FAILED": "Failed",
+    "PENDING": "Pending",
+    "FROZEN": "Frozen"
+  },
+  "fraudStatus": {
+    "OPEN": "Open",
+    "UNDER_REVIEW": "Under review",
+    "APPROVED": "Approved",
+    "REJECTED": "Confirmed fraud",
+    "CLOSED": "Closed"
+  },
+  "risk": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "CRITICAL": "Critical",
+    "aria": "Risk score {{score}}, {{level}}"
+  },
+  "slip": {
+    "aria": "Ledger slip {{ref}}",
+    "title": "Ledger slip · double entry",
+    "noLines": "No ledger lines: nothing was posted for this transaction.",
+    "DEBIT": "DEBIT",
+    "CREDIT": "CREDIT",
+    "balanceMove": "Balance",
+    "balanced": "Balanced",
+    "unbalanced": "Not balanced",
+    "amount": "Amount",
+    "beneficiary": "Beneficiary",
+    "description": "Description",
+    "time": "Posted at",
+    "remaining": "Remaining balance",
+    "reason": "Reason",
+    "footer": "Keep this slip for your records"
+  },
+  "activity": {
+    "to": "To",
+    "from": "From"
+  },
+  "flow": {
+    "title": "Money in and out",
+    "window": "Last {{days}} days",
+    "in": "In",
+    "out": "Out",
+    "net": "Net",
+    "today": "Today",
+    "date": "Date",
+    "chartAria": "Money in and out per day over the last {{days}} days"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good morning, {{name}}",
+      "midday": "Good day, {{name}}",
+      "afternoon": "Good afternoon, {{name}}",
+      "evening": "Good evening, {{name}}"
+    },
+    "sendMoney": "Send money",
+    "noAccounts": "No accounts yet",
+    "noAccountsBody": "Your current account appears here as soon as it's opened.",
+    "recent": "Recent activity",
+    "viewAll": "View all",
+    "noActivity": "No transfers yet.",
+    "noActivityBody": "Send your first one, or share your account number to receive money.",
+    "sendFirst": "Send money",
+    "notices": "Unread notices",
+    "allNotices": "All notifications",
+    "noNotices": "You're up to date."
+  },
+  "notification": {
+    "TRANSFER_SENT": {
+      "title": "You sent {{amount}}",
+      "body": "{{amount}} to {{counterpartyName}}, ref {{reference}}. Balance {{balanceAfter}}."
+    },
+    "TRANSFER_RECEIVED": {
+      "title": "You received {{amount}}",
+      "body": "From {{counterpartyName}}, ref {{reference}}. Balance {{balanceAfter}}."
+    },
+    "TRANSFER_REJECTED": {
+      "title": "Transfer not sent",
+      "body": "{{amount}} to {{counterpartyName}} (ref {{reference}}) was rejected. {{reason}}"
+    },
+    "ACCOUNT_FROZEN": {
+      "title": "Account frozen",
+      "body": "Account {{accountNumber}} is frozen. Outgoing transfers are blocked — contact the branch."
+    },
+    "ACCOUNT_UNFROZEN": {
+      "title": "Account active again",
+      "body": "Account {{accountNumber}} is active again. You can send money as usual."
+    },
+    "WELCOME": {
+      "title": "Welcome to SecureBank",
+      "body": "Your current account {{accountNumber}} is open."
+    }
+  },
+  "notifications": {
+    "unread": "Unread",
+    "markRead": "Mark read",
+    "viewTransaction": "View transaction",
+    "channel": {
+      "IN_APP": "In app",
+      "EMAIL": "Email",
+      "SMS": "SMS"
+    }
+  },
+  "pagination": {
+    "label": "Pages",
+    "range": "{{from}}–{{to}} of {{total}}",
+    "prev": "Previous page",
+    "next": "Next page"
+  },
+  "ops": {
+    "portal": "OPERATIONS",
+    "nav": {
+      "label": "Operations",
+      "today": "Today",
+      "fraud": "Fraud queue",
+      "accounts": "Accounts",
+      "customers": "Customers",
+      "transactions": "Transactions",
+      "audit": "Audit log",
+      "openAlerts": "{{count}} alerts need a decision"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Some details aren't valid. Check the highlighted fields.",
+    "MALFORMED_REQUEST": "The request couldn't be read. Reload the page and try again.",
+    "UNAUTHENTICATED": "Your session has ended. Sign in again.",
+    "FORBIDDEN_OPERATION": "Your role isn't allowed to do this.",
+    "RESOURCE_NOT_FOUND": "We couldn't find what you were looking for.",
+    "RATE_LIMITED": "Too many requests. Wait a moment and try again.",
+    "INTERNAL_ERROR": "Something went wrong on our side. Try again in a moment.",
+    "AUTH_INVALID_CREDENTIALS": "The username or password is incorrect.",
+    "AUTH_TOKEN_INVALID": "Your session has expired. Sign in again.",
+    "AUTH_REFRESH_TOKEN_INVALID": "Your session has expired. Sign in again.",
+    "AUTH_USERNAME_TAKEN": "This username is taken. Choose another.",
+    "AUTH_LOGIN_RATE_LIMITED": "Too many failed sign-in attempts. Wait 5 minutes and try again.",
+    "CUSTOMER_NOT_FOUND": "No customer profile was found.",
+    "ACCOUNT_NOT_FOUND": "No account with this number. Check the digits.",
+    "ACCOUNT_NOT_OWNED": "This account isn't yours, so you can't send from it.",
+    "ACCOUNT_FROZEN": "This account is frozen. Outgoing transfers are blocked — contact the branch.",
+    "ACCOUNT_CLOSED": "This account is closed and can't send or receive money.",
+    "ACCOUNT_STATUS_UNCHANGED": "The account is already in that status.",
+    "SAME_ACCOUNT_TRANSFER": "You can't send money to the same account it comes from.",
+    "CURRENCY_NOT_SUPPORTED": "Only VND transfers are supported.",
+    "CURRENCY_MISMATCH": "The two accounts use different currencies.",
+    "INSUFFICIENT_FUNDS": "Not enough money in the account for this amount.",
+    "INVALID_TRANSFER_AMOUNT": "Enter an amount greater than zero.",
+    "TRANSFER_LIMIT_EXCEEDED": "This is above the per-transfer limit. Send a smaller amount.",
+    "DAILY_LIMIT_EXCEEDED": "This would go over today's transfer limit. Send less, or wait until tomorrow.",
+    "IDEMPOTENCY_KEY_REQUIRED": "The transfer couldn't be identified. Reload the page and try again.",
+    "IDEMPOTENCY_KEY_CONFLICT": "This submission was already used for a different transfer. Review the details and send again.",
+    "IDEMPOTENCY_REQUEST_IN_PROGRESS": "Your transfer is still being processed. Wait a moment before checking again.",
+    "TRANSACTION_NOT_FOUND": "We couldn't find this transaction.",
+    "FRAUD_ALERT_NOT_FOUND": "We couldn't find this fraud alert.",
+    "FRAUD_ALERT_INVALID_TRANSITION": "The alert can't move to that status from where it is now. Reload to see its current state.",
+    "AUDIT_LOG_NOT_FOUND": "We couldn't find this audit record.",
+    "NOTIFICATION_NOT_FOUND": "We couldn't find this notification.",
+    "NETWORK_ERROR": "No connection to the bank. Check your network and try again.",
+    "TIMEOUT": "The bank took too long to answer. Try again.",
+    "BACKEND_UNAVAILABLE": "The banking server isn't reachable right now. Try again shortly.",
+    "UNKNOWN_ERROR": "Something unexpected happened. Try again."
   }
 }

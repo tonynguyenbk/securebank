@@ -11,6 +11,45 @@
     "en": "EN",
     "vi": "VI"
   },
+  "common": {
+    "loading": "Đang tải",
+    "restoringSession": "Đang khôi phục phiên đăng nhập",
+    "loadFailed": "Không tải được dữ liệu.",
+    "retry": "Thử lại",
+    "close": "Đóng",
+    "cancel": "Huỷ",
+    "dismiss": "Ẩn thông báo",
+    "optional": "Không bắt buộc",
+    "noResults": "Không có kết quả phù hợp với bộ lọc.",
+    "correlationId": "Mã truy vết",
+    "apply": "Áp dụng",
+    "reset": "Xoá bộ lọc",
+    "all": "Tất cả",
+    "back": "Quay lại",
+    "save": "Lưu",
+    "yes": "Có",
+    "no": "Không",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "print": "In"
+  },
+  "nav": {
+    "skip": "Bỏ qua đến nội dung",
+    "home": "Trang chủ SecureBank",
+    "main": "Điều hướng chính",
+    "overview": "Tổng quan",
+    "accounts": "Tài khoản",
+    "transfer": "Chuyển tiền",
+    "activity": "Lịch sử giao dịch",
+    "notifications": "Thông báo",
+    "notificationsUnread": "Thông báo, {{count}} chưa đọc",
+    "profile": "Hồ sơ & bảo mật",
+    "signOut": "Đăng xuất",
+    "signingOut": "Đang đăng xuất…",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "accountMenu": "Menu tài khoản của {{name}}"
+  },
   "login": {
     "band": "Ngân hàng điện tử",
     "title": "Đăng nhập ngân hàng điện tử",
@@ -21,29 +60,267 @@
     "hidePassword": "Ẩn mật khẩu",
     "submit": "Đăng nhập",
     "submitting": "Đang đăng nhập…",
-    "noAccount": "Chưa có tài khoản?",
-    "register": "Mở tài khoản demo",
+    "noAccount": "Chưa là khách hàng?",
+    "register": "Mở tài khoản thanh toán",
     "required": "Vui lòng nhập {{field}}.",
     "demoTitle": "Tài khoản demo",
-    "demoHint": "Chỉ là dữ liệu demo nội bộ. Chọn một dòng để điền sẵn.",
+    "demoHint": "Chỉ là dữ liệu mẫu. Chọn một dòng để điền sẵn.",
     "colUser": "Người dùng",
     "colRole": "Vai trò",
     "colAccount": "Số tài khoản",
     "useAccount": "Dùng {{user}}",
-    "backendOffline": "Bản xem trước này chưa kết nối máy chủ ngân hàng. Đăng nhập sẽ hoạt động khi backend được triển khai hoặc khi bạn chạy cục bộ bằng Docker Compose."
+    "footer": "SB-VN · Chuyển khoản nội bộ · Sổ cái bút toán kép",
+    "backendOffline": "Không kết nối được máy chủ ngân hàng. Nếu bạn chạy cục bộ, hãy khởi động backend bằng Docker Compose rồi thử lại."
+  },
+  "register": {
+    "eyebrow": "Mở tài khoản",
+    "title": "Mở tài khoản thanh toán",
+    "subtitle": "Ngay khi đăng ký, chúng tôi mở cho bạn một tài khoản thanh toán VND đứng tên bạn, số dư ban đầu bằng 0.",
+    "fullName": "Họ và tên",
+    "fullNamePh": "Theo CCCD",
+    "username": "Tên đăng nhập",
+    "usernameHint": "3–50 ký tự: chữ thường, chữ số, dấu chấm, gạch ngang hoặc gạch dưới.",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "rulesLabel": "Yêu cầu mật khẩu",
+    "rules": {
+      "length": "Từ 8 ký tự",
+      "upper": "Chữ hoa",
+      "lower": "Chữ thường",
+      "digit": "Chữ số",
+      "symbol": "Ký tự đặc biệt"
+    },
+    "ruleMet": "đã đạt",
+    "ruleNotMet": "chưa đạt",
+    "phone": "Số điện thoại",
+    "phoneHint": "9–15 chữ số, có thể bắt đầu bằng +.",
+    "submit": "Mở tài khoản",
+    "submitting": "Đang mở tài khoản…",
+    "haveAccount": "Đã là khách hàng?",
+    "signIn": "Đăng nhập",
+    "done": "Tài khoản của bạn đã được mở. Chào mừng đến với SecureBank.",
+    "errors": {
+      "username": "Dùng 3–50 ký tự gồm chữ thường, chữ số, dấu chấm, gạch ngang hoặc gạch dưới.",
+      "password": "Mật khẩu chưa đáp ứng đủ các yêu cầu bên dưới.",
+      "fullName": "Nhập họ và tên (tối đa 200 ký tự).",
+      "email": "Nhập địa chỉ email hợp lệ.",
+      "phone": "Nhập 9–15 chữ số, có thể bắt đầu bằng +."
+    }
   },
   "roles": {
     "CUSTOMER": "Khách hàng",
     "BANK_STAFF": "Nhân viên",
-    "AUDITOR": "Kiểm toán",
+    "AUDITOR": "Kiểm toán viên",
     "ADMIN": "Quản trị"
   },
   "preview": {
-    "badge": "Bản xem trước",
-    "note": "Giao diện đang xây dựng · dữ liệu không thật"
+    "badge": "Bản xem trước · dữ liệu mẫu",
+    "badgeShort": "Xem trước",
+    "note": "Bản xem trước chạy không có máy chủ ngân hàng. Mọi tên, số dư và giao dịch đều là dữ liệu mẫu lưu trong tab trình duyệt này.",
+    "reset": "Khôi phục dữ liệu mẫu",
+    "resetTitle": "Khôi phục dữ liệu mẫu?",
+    "resetBody": "Mọi giao dịch, thao tác duyệt và thay đổi bạn đã làm trong tab này sẽ bị xoá, dữ liệu mẫu được khôi phục. Bạn sẽ được đăng xuất.",
+    "resetConfirm": "Khôi phục và đăng xuất"
   },
   "notFound": {
     "title": "Trang này không tồn tại",
     "back": "Về trang đăng nhập"
+  },
+  "status": {
+    "toHome": "Về trang của bạn",
+    "forbiddenTitle": "Bạn không có quyền vào khu vực này",
+    "forbiddenBody": "Vai trò của bạn không được mở cổng này. Nếu cần quyền truy cập, hãy liên hệ quản trị viên.",
+    "notFoundBody": "Đường dẫn có thể đã cũ hoặc bị gõ sai.",
+    "recordMissing": "Không tìm thấy bản ghi",
+    "recordMissingBody": "Bản ghi không tồn tại hoặc bạn không có quyền xem.",
+    "inProgress": "Mục này đang được hoàn thiện và sẽ có trong lần cập nhật bản xem trước tiếp theo."
+  },
+  "account": {
+    "passbook": "Sổ tài khoản",
+    "type": {
+      "CURRENT": "Tài khoản thanh toán"
+    },
+    "available": "Số dư khả dụng",
+    "frozenNote": "Đang bị phong toả. Không thể chuyển tiền đi; tiền chuyển đến vẫn được ghi có.",
+    "openedOn": "Mở ngày {{date}}",
+    "openDetail": "Xem tài khoản {{number}}",
+    "showNumber": "Hiện đầy đủ số tài khoản",
+    "hideNumber": "Ẩn số tài khoản"
+  },
+  "accountStatus": {
+    "ACTIVE": "Hoạt động",
+    "FROZEN": "Phong toả",
+    "CLOSED": "Đã đóng"
+  },
+  "txStatus": {
+    "SUCCESS": "Đã ghi sổ",
+    "PENDING": "Đang xử lý",
+    "FAILED": "Thất bại",
+    "REJECTED": "Bị từ chối"
+  },
+  "stamp": {
+    "POSTED": "Đã ghi sổ",
+    "REJECTED": "Từ chối",
+    "FAILED": "Thất bại",
+    "PENDING": "Chờ xử lý",
+    "FROZEN": "Phong toả"
+  },
+  "fraudStatus": {
+    "OPEN": "Mới",
+    "UNDER_REVIEW": "Đang xem xét",
+    "APPROVED": "Hợp lệ",
+    "REJECTED": "Xác nhận gian lận",
+    "CLOSED": "Đã đóng"
+  },
+  "risk": {
+    "LOW": "Thấp",
+    "MEDIUM": "Trung bình",
+    "HIGH": "Cao",
+    "CRITICAL": "Nghiêm trọng",
+    "aria": "Điểm rủi ro {{score}}, mức {{level}}"
+  },
+  "slip": {
+    "aria": "Phiếu hạch toán {{ref}}",
+    "title": "Phiếu hạch toán · bút toán kép",
+    "noLines": "Không có bút toán: giao dịch này chưa được ghi sổ.",
+    "DEBIT": "NỢ",
+    "CREDIT": "CÓ",
+    "balanceMove": "Số dư",
+    "balanced": "Cân đối",
+    "unbalanced": "Không cân đối",
+    "amount": "Số tiền",
+    "beneficiary": "Người thụ hưởng",
+    "description": "Nội dung",
+    "time": "Thời gian ghi sổ",
+    "remaining": "Số dư còn lại",
+    "reason": "Lý do",
+    "footer": "Vui lòng lưu phiếu này để đối chiếu"
+  },
+  "activity": {
+    "to": "Đến",
+    "from": "Từ"
+  },
+  "flow": {
+    "title": "Tiền vào và ra",
+    "window": "{{days}} ngày gần nhất",
+    "in": "Tiền vào",
+    "out": "Tiền ra",
+    "net": "Chênh lệch",
+    "today": "Hôm nay",
+    "date": "Ngày",
+    "chartAria": "Tiền vào và ra theo ngày trong {{days}} ngày gần nhất"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Chào buổi sáng, {{name}}",
+      "midday": "Chào buổi trưa, {{name}}",
+      "afternoon": "Chào buổi chiều, {{name}}",
+      "evening": "Chào buổi tối, {{name}}"
+    },
+    "sendMoney": "Chuyển tiền",
+    "noAccounts": "Chưa có tài khoản",
+    "noAccountsBody": "Tài khoản thanh toán của bạn sẽ hiện ở đây ngay khi được mở.",
+    "recent": "Giao dịch gần đây",
+    "viewAll": "Xem tất cả",
+    "noActivity": "Chưa có giao dịch nào.",
+    "noActivityBody": "Hãy thực hiện giao dịch đầu tiên, hoặc gửi số tài khoản để nhận tiền.",
+    "sendFirst": "Chuyển tiền",
+    "notices": "Thông báo chưa đọc",
+    "allNotices": "Tất cả thông báo",
+    "noNotices": "Bạn đã đọc hết thông báo."
+  },
+  "notification": {
+    "TRANSFER_SENT": {
+      "title": "Đã chuyển {{amount}}",
+      "body": "{{amount}} đến {{counterpartyName}}, mã {{reference}}. Số dư {{balanceAfter}}."
+    },
+    "TRANSFER_RECEIVED": {
+      "title": "Bạn nhận được {{amount}}",
+      "body": "Từ {{counterpartyName}}, mã {{reference}}. Số dư {{balanceAfter}}."
+    },
+    "TRANSFER_REJECTED": {
+      "title": "Giao dịch không thực hiện được",
+      "body": "Lệnh chuyển {{amount}} đến {{counterpartyName}} (mã {{reference}}) bị từ chối. {{reason}}"
+    },
+    "ACCOUNT_FROZEN": {
+      "title": "Tài khoản bị phong toả",
+      "body": "Tài khoản {{accountNumber}} đã bị phong toả. Mọi lệnh chuyển tiền đi bị chặn — vui lòng liên hệ chi nhánh."
+    },
+    "ACCOUNT_UNFROZEN": {
+      "title": "Tài khoản hoạt động trở lại",
+      "body": "Tài khoản {{accountNumber}} đã được gỡ phong toả. Bạn có thể chuyển tiền như bình thường."
+    },
+    "WELCOME": {
+      "title": "Chào mừng đến với SecureBank",
+      "body": "Tài khoản thanh toán {{accountNumber}} của bạn đã được mở."
+    }
+  },
+  "notifications": {
+    "unread": "Chưa đọc",
+    "markRead": "Đánh dấu đã đọc",
+    "viewTransaction": "Xem giao dịch",
+    "channel": {
+      "IN_APP": "Trong ứng dụng",
+      "EMAIL": "Email",
+      "SMS": "SMS"
+    }
+  },
+  "pagination": {
+    "label": "Phân trang",
+    "range": "{{from}}–{{to}} / {{total}}",
+    "prev": "Trang trước",
+    "next": "Trang sau"
+  },
+  "ops": {
+    "portal": "NGHIỆP VỤ",
+    "nav": {
+      "label": "Nghiệp vụ",
+      "today": "Hôm nay",
+      "fraud": "Cảnh báo gian lận",
+      "accounts": "Tài khoản",
+      "customers": "Khách hàng",
+      "transactions": "Giao dịch",
+      "audit": "Nhật ký kiểm toán",
+      "openAlerts": "{{count}} cảnh báo cần xử lý"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Một số thông tin chưa hợp lệ. Vui lòng kiểm tra các ô được đánh dấu.",
+    "MALFORMED_REQUEST": "Không đọc được yêu cầu. Hãy tải lại trang rồi thử lại.",
+    "UNAUTHENTICATED": "Phiên đăng nhập đã kết thúc. Vui lòng đăng nhập lại.",
+    "FORBIDDEN_OPERATION": "Vai trò của bạn không được phép thực hiện thao tác này.",
+    "RESOURCE_NOT_FOUND": "Không tìm thấy nội dung bạn cần.",
+    "RATE_LIMITED": "Quá nhiều yêu cầu. Vui lòng đợi một lát rồi thử lại.",
+    "INTERNAL_ERROR": "Hệ thống đang gặp sự cố. Vui lòng thử lại sau ít phút.",
+    "AUTH_INVALID_CREDENTIALS": "Tên đăng nhập hoặc mật khẩu không đúng.",
+    "AUTH_TOKEN_INVALID": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+    "AUTH_REFRESH_TOKEN_INVALID": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+    "AUTH_USERNAME_TAKEN": "Tên đăng nhập này đã có người dùng. Vui lòng chọn tên khác.",
+    "AUTH_LOGIN_RATE_LIMITED": "Bạn đã đăng nhập sai quá nhiều lần. Vui lòng thử lại sau 5 phút.",
+    "CUSTOMER_NOT_FOUND": "Không tìm thấy hồ sơ khách hàng.",
+    "ACCOUNT_NOT_FOUND": "Không có tài khoản với số này. Vui lòng kiểm tra lại.",
+    "ACCOUNT_NOT_OWNED": "Tài khoản này không thuộc về bạn nên không thể chuyển tiền đi.",
+    "ACCOUNT_FROZEN": "Tài khoản đang bị phong toả. Không thể chuyển tiền đi — vui lòng liên hệ chi nhánh.",
+    "ACCOUNT_CLOSED": "Tài khoản đã đóng, không thể chuyển hoặc nhận tiền.",
+    "ACCOUNT_STATUS_UNCHANGED": "Tài khoản đã ở trạng thái này rồi.",
+    "SAME_ACCOUNT_TRANSFER": "Không thể chuyển tiền đến chính tài khoản nguồn.",
+    "CURRENCY_NOT_SUPPORTED": "Hiện chỉ hỗ trợ chuyển tiền bằng VND.",
+    "CURRENCY_MISMATCH": "Hai tài khoản dùng loại tiền khác nhau.",
+    "INSUFFICIENT_FUNDS": "Số dư không đủ để chuyển số tiền này.",
+    "INVALID_TRANSFER_AMOUNT": "Vui lòng nhập số tiền lớn hơn 0.",
+    "TRANSFER_LIMIT_EXCEEDED": "Số tiền vượt hạn mức mỗi giao dịch. Vui lòng chuyển ít hơn.",
+    "DAILY_LIMIT_EXCEEDED": "Giao dịch này sẽ vượt hạn mức trong ngày. Hãy chuyển ít hơn hoặc thực hiện vào ngày mai.",
+    "IDEMPOTENCY_KEY_REQUIRED": "Không xác định được lệnh chuyển. Hãy tải lại trang rồi thử lại.",
+    "IDEMPOTENCY_KEY_CONFLICT": "Lần gửi này đã được dùng cho một lệnh chuyển khác. Hãy kiểm tra lại thông tin và gửi lại.",
+    "IDEMPOTENCY_REQUEST_IN_PROGRESS": "Lệnh chuyển của bạn vẫn đang được xử lý. Vui lòng đợi một lát rồi kiểm tra lại.",
+    "TRANSACTION_NOT_FOUND": "Không tìm thấy giao dịch này.",
+    "FRAUD_ALERT_NOT_FOUND": "Không tìm thấy cảnh báo gian lận này.",
+    "FRAUD_ALERT_INVALID_TRANSITION": "Cảnh báo không thể chuyển sang trạng thái đó từ trạng thái hiện tại. Hãy tải lại để xem trạng thái mới nhất.",
+    "AUDIT_LOG_NOT_FOUND": "Không tìm thấy bản ghi kiểm toán này.",
+    "NOTIFICATION_NOT_FOUND": "Không tìm thấy thông báo này.",
+    "NETWORK_ERROR": "Không kết nối được ngân hàng. Vui lòng kiểm tra mạng rồi thử lại.",
+    "TIMEOUT": "Ngân hàng phản hồi quá lâu. Vui lòng thử lại.",
+    "BACKEND_UNAVAILABLE": "Máy chủ ngân hàng tạm thời không truy cập được. Vui lòng thử lại sau.",
+    "UNKNOWN_ERROR": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại."
   }
 }

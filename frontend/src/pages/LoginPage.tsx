@@ -1,7 +1,12 @@
 import { Eye, EyeOff, LoaderCircle, TriangleAlert } from 'lucide-react'
 import { useId, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { homeFor } from '../auth/context'
+import { useAuth } from '../auth/useAuth'
 import { Guilloche } from '../components/Guilloche'
+import { Wordmark } from '../components/Layout'
+import { errorCode, errorText } from '../utils/errorMessage'
 import { LanguageSwitch } from '../components/LanguageSwitch'
 import { PreviewBadge } from '../components/PreviewBadge'
 import { ThemeSwitch } from '../components/ThemeSwitch'
@@ -19,10 +24,13 @@ const DEMO_USERS: { username: string; password: string; role: Role; account?: st
 
 const YEAR = new Date().getFullYear()
 
-type FieldErrors =Partial<Record<'username' | 'password', string>>
+type FieldErrors = Partial<Record<'username' | 'password', string>>
 
 export function LoginPage() {
   const { t } = useTranslation()
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
   const ids = { user: useId(), pass: useId(), userErr: useId(), passErr: useId() }
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -42,17 +50,15 @@ export function LoginPage() {
 
     setSubmitting(true)
     try {
-      const res = await fetch(`${import.meta.env.BASE_URL}api/v1/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.trim(), password }),
-      })
-      if (!res.headers.get('content-type')?.includes('application/json')) throw new Error('offline')
-      // Real session handling arrives with the identity service (Phase 2/9).
-      throw new Error('offline')
-    } catch {
-      setFormError(t('login.backendOffline'))
-    } finally {
+      const user = await login(username.trim(), password)
+      const from = (location.state as { from?: string } | null)?.from
+      const home = homeFor(user)
+      // Only honour the intended path if it belongs to this user's portal.
+      const target = from && from.startsWith('/ops') === home.startsWith('/ops') ? from : home
+      navigate(target, { replace: true })
+    } catch (err) {
+      const code = errorCode(err)
+      setFormError(code === 'BACKEND_UNAVAILABLE' || code === 'NETWORK_ERROR' ? t('login.backendOffline') : errorText(t, err))
       setSubmitting(false)
     }
   }
@@ -151,6 +157,12 @@ export function LoginPage() {
                 {submitting && <LoaderCircle size={16} className="animate-spin" aria-hidden />}
                 {submitting ? t('login.submitting') : t('login.submit')}
               </button>
+              <p className="mt-6 text-[13px] text-ink-2">
+                {t('login.noAccount')}{' '}
+                <Link to="/register" className="font-medium text-vault underline-offset-4 hover:underline">
+                  {t('login.register')}
+                </Link>
+              </p>
             </form>
 
             <aside className="border-t border-rule px-6 py-8 sm:px-10 sm:py-10 lg:border-t-0 lg:border-l">
@@ -187,24 +199,12 @@ export function LoginPage() {
           </div>
 
           <footer className="figures flex flex-wrap justify-between gap-2 border-t border-dashed border-rule px-6 py-3 text-[11px] text-ink-2 sm:px-10">
-            <span>SB-VN · INTERNAL TRANSFERS · DOUBLE-ENTRY LEDGER</span>
+            <span>{t('login.footer')}</span>
             <span>build {import.meta.env.VITE_BUILD_SHA?.slice(0, 7) ?? 'local'}</span>
           </footer>
         </section>
       </main>
     </div>
-  )
-}
-
-function Wordmark() {
-  return (
-    <span className="inline-flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
-        <rect x="0.5" y="0.5" width="21" height="21" rx="4" className="fill-vault" />
-        <path d="M5 8h12M5 11h12M5 14h7" stroke="white" strokeWidth="1.4" />
-      </svg>
-      SecureBank
-    </span>
   )
 }
 

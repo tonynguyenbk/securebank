@@ -11,8 +11,19 @@ import App from './App'
 import './i18n'
 import './index.css'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+async function enableMocks() {
+  // Statically false in live builds, so the mock layer (and MSW) is never bundled there.
+  if (import.meta.env.VITE_API_MODE !== 'mock') return
+  const { startMockApi } = await import('./mocks/browser')
+  await startMockApi()
+}
+
+enableMocks()
+  .catch((err) => console.error('Mock API failed to start', err))
+  .finally(() => {
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <App />
+      </StrictMode>,
+    )
+  })
