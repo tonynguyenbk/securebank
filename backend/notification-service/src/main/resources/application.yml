@@ -43,7 +43,12 @@ securebank:
       issuer: securebank-identity
     revocation-check: false
   outbox:
-    enabled: true
+    # notification-service only consumes events; it never produces any.
+    enabled: false
+  kafka:
+    consumer:
+      max-attempts: 4
+      initial-backoff: 500ms
 
 management:
   endpoints:
