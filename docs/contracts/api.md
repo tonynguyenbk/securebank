@@ -19,6 +19,7 @@ Events: [`events.md`](events.md). Error codes: `backend/common/.../error/ErrorCo
 | Correlation | Optional request header `X-Correlation-Id` (8–64 chars `[A-Za-z0-9._-]`); always echoed in the response |
 | Pagination | Query `page` (0-based, default 0), `size` (default 20, max 100), `sort=field,asc|desc`. Response: `PageResponse` |
 | Errors | Always `ApiError` (below). Never stack traces |
+| Concurrency | Optimistic-lock conflicts (e.g. two staff editing the same record) → 409 `CONCURRENT_UPDATE` |
 
 ```ts
 type PageResponse<T> = { content: T[]; page: number; size: number; totalElements: number; totalPages: number }
@@ -149,6 +150,7 @@ A customer sees transactions where one of their accounts is source or destinatio
   400 `IDEMPOTENCY_KEY_REQUIRED` · 400 `VALIDATION_FAILED` / `INVALID_TRANSFER_AMOUNT` · 400 `CURRENCY_NOT_SUPPORTED` · 400 `SAME_ACCOUNT_TRANSFER` ·
   404 `ACCOUNT_NOT_FOUND` · 403 `ACCOUNT_NOT_OWNED` · 422 `ACCOUNT_FROZEN` (source) · 422 `ACCOUNT_CLOSED` · 422 `CURRENCY_MISMATCH` ·
   422 `TRANSFER_LIMIT_EXCEEDED` · 422 `DAILY_LIMIT_EXCEEDED` · 422 `INSUFFICIENT_FUNDS`.
+  409 `ACCOUNT_BUSY` when an account row lock times out (another transfer holds it); nothing is persisted, retry with the same key.
 - 422 rejections after the source account is identified are persisted as a `REJECTED` transaction (no ledger lines) and emit `TransactionFailedEvent` + audit `TRANSFER_REJECTED`.
 - **Frozen destination: incoming transfers are allowed** (documented policy, spec §16). Closed destination → 422 `ACCOUNT_CLOSED`.
 - Demo defaults: per-transaction limit 100,000,000; daily limit 500,000,000 (sum of today's SUCCESS outgoing, Asia/Ho_Chi_Minh day).

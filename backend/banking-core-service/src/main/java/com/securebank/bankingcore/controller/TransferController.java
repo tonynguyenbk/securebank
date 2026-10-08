@@ -86,7 +86,7 @@ public class TransferController {
     @ApiResponse(responseCode = "422", description = "Rejected and recorded as REJECTED: ACCOUNT_FROZEN, "
             + "ACCOUNT_CLOSED, CURRENCY_MISMATCH, TRANSFER_LIMIT_EXCEEDED, DAILY_LIMIT_EXCEEDED, INSUFFICIENT_FUNDS",
             content = @Content(schema = @Schema(implementation = ApiError.class)))
-    @ApiResponse(responseCode = "429", description = "RATE_LIMITED: account busy (lock timeout), retry with the same key",
+    @ApiResponse(responseCode = "409", description = "ACCOUNT_BUSY: account locked by another transfer (lock timeout), retry with the same key",
             content = @Content(schema = @Schema(implementation = ApiError.class)))
     public ResponseEntity<String> create(@Parameter(hidden = true) @RequestHeader(IDEMPOTENCY_KEY) String idempotencyKey,
                                          @Valid @RequestBody CreateTransferRequest request) {

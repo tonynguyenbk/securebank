@@ -14,6 +14,7 @@ public enum ErrorCode {
     FORBIDDEN_OPERATION(HttpStatus.FORBIDDEN, "You are not allowed to perform this operation."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested resource was not found."),
     RATE_LIMITED(HttpStatus.TOO_MANY_REQUESTS, "Too many requests. Try again later."),
+    CONCURRENT_UPDATE(HttpStatus.CONFLICT, "The resource was changed by someone else. Reload and try again."),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred."),
 
     // identity
@@ -30,6 +31,7 @@ public enum ErrorCode {
     ACCOUNT_FROZEN(HttpStatus.UNPROCESSABLE_ENTITY, "The account is frozen."),
     ACCOUNT_CLOSED(HttpStatus.UNPROCESSABLE_ENTITY, "The account is closed."),
     ACCOUNT_STATUS_UNCHANGED(HttpStatus.CONFLICT, "The account is already in the requested status."),
+    ACCOUNT_BUSY(HttpStatus.CONFLICT, "The account is busy with another operation. Retry with the same Idempotency-Key."),
     SAME_ACCOUNT_TRANSFER(HttpStatus.BAD_REQUEST, "Source and destination accounts must be different."),
     CURRENCY_NOT_SUPPORTED(HttpStatus.BAD_REQUEST, "The currency is not supported."),
     CURRENCY_MISMATCH(HttpStatus.UNPROCESSABLE_ENTITY, "Account currencies do not match."),

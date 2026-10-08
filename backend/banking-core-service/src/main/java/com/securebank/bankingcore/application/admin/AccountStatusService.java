@@ -73,7 +73,7 @@ public class AccountStatusService {
             account = accounts.findByIdForUpdate(accountId)
                     .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
         } catch (PessimisticLockingFailureException e) {
-            throw new ApiException(ErrorCode.RATE_LIMITED, "The account is busy. Please retry.");
+            throw new ApiException(ErrorCode.ACCOUNT_BUSY, "The account is busy. Please retry.");
         }
         AccountStatus previous = account.getStatus();
         if (previous == AccountStatus.CLOSED) {

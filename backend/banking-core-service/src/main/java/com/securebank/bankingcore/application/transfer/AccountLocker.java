@@ -81,7 +81,7 @@ public class AccountLocker {
     }
 
     private static ApiException busy() {
-        return new ApiException(ErrorCode.RATE_LIMITED,
+        return new ApiException(ErrorCode.ACCOUNT_BUSY,
                 "The account is busy with another transfer. Please retry with the same Idempotency-Key.");
     }
 

@@ -16,9 +16,9 @@ Last updated: 2026-10-08
 | 0 | Repo, CI, deploy pipeline | [x] | GitHub repo + green CI badge + preview URL |
 | 1 | Bootstrap (Maven, Vite, Compose infra) | [x] | Skeleton app at preview URL |
 | 2 | Identity service (+ gateway) | [x] | — (API) |
-| 3 | Banking core basic | [ ] | — (API) |
-| 4 | Transfer engine | [ ] | — (API + tests in CI) |
-| 5 | Outbox + Kafka | [ ] | — |
+| 3 | Banking core basic | [x] | — (API) |
+| 4 | Transfer engine | [x] | — (API + tests in CI) |
+| 5 | Outbox + Kafka | [x] | — |
 | 6 | Fraud service | [x] | — |
 | 7 | Audit service | [x] | — |
 | 8 | Notification service | [x] | — |
@@ -77,29 +77,29 @@ Last updated: 2026-10-08
 - [x] Tests: `JwtServiceTest`, auth controller integration test (Testcontainers)
 
 ## Phase 3 — Banking core basic
-- [ ] Flyway V1–V8 per spec §41
-- [ ] Entities: Customer, Account (`@Version`), TransferLimit
-- [ ] `/customers/me`, `/accounts`, `/accounts/{id}`, `/accounts/{id}/balance` with ownership checks
-- [ ] Admin: customers/accounts list+detail, freeze/unfreeze, limits GET/PUT (`@PreAuthorize`)
-- [ ] Demo seed: accounts 1000000001 (25M), 1000000002 (10M)
-- [ ] Global `@ControllerAdvice` + error codes (spec §42)
+- [x] Flyway V1–V8 per spec §41
+- [x] Entities: Customer, Account (`@Version`), TransferLimit
+- [x] `/customers/me`, `/accounts`, `/accounts/{id}`, `/accounts/{id}/balance` with ownership checks
+- [x] Admin: customers/accounts list+detail, freeze/unfreeze, limits GET/PUT (`@PreAuthorize`)
+- [x] Demo seed: accounts 1000000001 (25M), 1000000002 (10M)
+- [x] Global `@ControllerAdvice` + error codes (spec §42)
 
 ## Phase 4 — Transfer engine (most important)
-- [ ] `POST /transfers` following spec §10 step by step
-- [ ] Idempotency: SHA-256 request hash, `UNIQUE(user_id, key)`, stored response replay, 409 on mismatch
-- [ ] `PESSIMISTIC_WRITE` locks ordered by account UUID
-- [ ] Per-transaction + daily limits; ACTIVE check; currency check; balance check
-- [ ] Exactly 2 ledger entries (balance before/after), `TX` reference generator (DB sequence)
-- [ ] Rejected transfers persisted as `REJECTED` in separate transaction (for ops visibility)
-- [ ] `GET /transfers`, `GET /transfers/{id}` (filters + pagination), admin transactions, reconciliation endpoint
-- [ ] Integration tests (spec §36): success, insufficient funds, frozen, per-tx limit, daily limit, duplicate key, key conflict, **concurrency (2×800k on 1M)**, **rollback after debit**, authorization, staff permissions
-- [ ] Micrometer: `transfer_success_total`, `transfer_failure_total`, `transfer_latency`
+- [x] `POST /transfers` following spec §10 step by step
+- [x] Idempotency: SHA-256 request hash, `UNIQUE(user_id, key)`, stored response replay, 409 on mismatch
+- [x] `PESSIMISTIC_WRITE` locks ordered by account UUID
+- [x] Per-transaction + daily limits; ACTIVE check; currency check; balance check
+- [x] Exactly 2 ledger entries (balance before/after), `TX` reference generator (DB sequence)
+- [x] Rejected transfers persisted as `REJECTED` in separate transaction (for ops visibility)
+- [x] `GET /transfers`, `GET /transfers/{id}` (filters + pagination), admin transactions, reconciliation endpoint
+- [x] Integration tests (spec §36): success, insufficient funds, frozen, per-tx limit, daily limit, duplicate key, key conflict, **concurrency (2×800k on 1M)**, **rollback after debit**, authorization, staff permissions
+- [x] Micrometer: `transfer_success_total`, `transfer_failure_total`, `transfer_latency`
 
 ## Phase 5 — Outbox + Kafka
-- [ ] `outbox_events` written in transfer TX; `ACCOUNT_STATUS_CHANGED`, audit events also via outbox
-- [ ] Scheduled publisher: `FOR UPDATE SKIP LOCKED` batch, publish, mark PUBLISHED, retry_count, FAILED after N
-- [ ] Topics per spec §17; correlation ID in Kafka headers
-- [ ] Test: publisher publishes (Kafka Testcontainer); metrics `outbox_pending_count`, `kafka_publish_failure_total`
+- [x] `outbox_events` written in transfer TX; `ACCOUNT_STATUS_CHANGED`, audit events also via outbox
+- [x] Scheduled publisher: `FOR UPDATE SKIP LOCKED` batch, publish, mark PUBLISHED, retry_count, FAILED after N
+- [x] Topics per spec §17; correlation ID in Kafka headers
+- [x] Test: publisher publishes (Kafka Testcontainer); metrics `outbox_pending_count`, `kafka_publish_failure_total`
 
 ## Phase 6 — Fraud service
 - [x] Consumer `bank.transaction.completed.v1`, `processed_events` table for idempotency
@@ -198,6 +198,7 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-09 — Agent B merged (banking core). Full backend suite after merge: 212 tests, 0 failures. Common: added ACCOUNT_BUSY / CONCURRENT_UPDATE codes, HandlerMethodValidationException → 400, OptimisticLockingFailureException → 409.
 - 2026-10-09 — Agent C merged (fraud, audit, notification): 71 tests green after merge. Follow-ups for lead: map OptimisticLockingFailureException → 409 in common; dedupe copied Kafka consumer config/test helpers into common; poison messages are logged+skipped (no DLT).
 - 2026-10-09 — Agent A merged (identity + gateway): 68 tests green after merge (common 9, identity 43, gateway 16). Notes: BCrypt >72-byte passwords pre-hashed with SHA-256; gateway trusts only private-range proxies for X-Forwarded-For; gateway actuator route endpoint not exposed.
 - 2026-10-08 — Wave 0 done: Maven multi-module + common module, API/event contracts, compose infra, CI. Wave 1 agents launched.
