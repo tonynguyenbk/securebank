@@ -13,7 +13,7 @@ Last updated: 2026-10-08
 
 | # | Phase | Status | Live-visible result after push |
 |---|---|---|---|
-| 0 | Repo, CI, deploy pipeline | [ ] | GitHub repo + green CI badge + preview URL |
+| 0 | Repo, CI, deploy pipeline | [~] | GitHub repo + green CI badge + preview URL |
 | 1 | Bootstrap (Maven, Vite, Compose infra) | [ ] | Skeleton app at preview URL |
 | 2 | Identity service | [ ] | — (API) |
 | 3 | Banking core basic | [ ] | — (API) |
@@ -44,18 +44,18 @@ Last updated: 2026-10-08
 | Kafka | `apache/kafka` image, KRaft single node | No ZooKeeper |
 | JWT | HS256, shared secret from env `JWT_SECRET`, validated in every service | Simple, documented; RS256 listed as future improvement |
 | Token storage (FE) | Access token in memory, refresh token in `sessionStorage` | Tradeoff documented in `docs/security.md` |
-| Frontend libs | React 18, Vite, Tailwind, React Router, TanStack Query, Axios, Recharts, Lucide, `@fontsource` | Per spec |
+| Frontend libs | React 19, Vite 8, Tailwind v4, Vite, Tailwind, React Router, TanStack Query, Axios, Recharts, Lucide, `@fontsource` | Per spec |
 | Deploy target | **Option A** — frontend preview on **GitHub Pages** (auto-deploy on push to `main`), mock API via MSW labelled "Preview data"; real stack via Docker Compose locally | Owner decision 2026-10-08; free; `gh` already authenticated |
 | UI language | **Bilingual EN/VI** — `i18next` + `react-i18next`, toggle in header, default from browser language, persisted in `localStorage`; amounts always `vi-VN` VND format | Owner decision 2026-10-08 |
 
 ---
 
 ## Phase 0 — Repository, CI, deploy pipeline
-- [ ] `git init`, `.gitignore`, `.gitattributes` (LF for `*.sh`, `mvnw`)
-- [ ] Create GitHub repo `securebank` (account `tonynguyenbk`) and push `main`
-- [ ] GitHub Actions `ci.yml`: backend `./mvnw verify` (Testcontainers on ubuntu runner) + frontend `npm ci && npm run build && npm run lint`
-- [ ] GitHub Actions `deploy-preview.yml`: build frontend with `VITE_API_MODE=mock` and publish to GitHub Pages on every push to `main` (SPA fallback via `404.html`, base `/securebank/`)
-- [ ] README badges (CI, preview link)
+- [x] `git init`, `.gitignore`, `.gitattributes` (LF for `*.sh`, `mvnw`)
+- [x] Create GitHub repo `securebank` (account `tonynguyenbk`) and push `main` → https://github.com/tonynguyenbk/securebank
+- [ ] GitHub Actions `ci.yml` (frontend lint+build already runs in deploy workflow; backend added in Phase 1): backend `./mvnw verify` (Testcontainers on ubuntu runner) + frontend `npm ci && npm run build && npm run lint`
+- [x] GitHub Actions `deploy-preview.yml`: build frontend with `VITE_API_MODE=mock` and publish to GitHub Pages on every push to `main` (SPA fallback via `404.html`, base `/securebank/`)
+- [x] README badge + preview link → **https://tonynguyenbk.github.io/securebank/**
 
 ## Phase 1 — Bootstrap
 - [ ] Monorepo folders: `backend/ frontend/ infra/ scripts/ docs/`
@@ -197,4 +197,5 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
-- 2026-10-08 — Plan and design system drafted. Parallel multi-agent plan added. Deploy = Option A (GitHub Pages). UI = bilingual EN/VI.
+- 2026-10-08 — Plan and design system drafted. Parallel multi-agent plan added. Deploy = Option A (GitHub Pages). UI = bilingual EN/VI + dark mode.
+- 2026-10-08 — First deploy live: login page (EN/VI, light/dark/system), build `d00d403`. Display font switched to Be Vietnam Pro (Vietnamese diacritics).
