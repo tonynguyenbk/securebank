@@ -1,9 +1,37 @@
 # SecureBank local environment.
+#   Full stack:                                        docker compose up --build
 #   Infrastructure only (run services from the IDE):  docker compose up -d postgres redis kafka
-#   Full stack (added in Phase 11):                    docker compose up --build
+# After startup: frontend http://localhost:3000 · gateway http://localhost:8080 ·
+#                Prometheus http://localhost:9090 · Grafana http://localhost:3001
 name: securebank
 
+x-backend-env: &backend-env
+  DB_USERNAME: ${DB_USERNAME}
+  DB_PASSWORD: ${DB_PASSWORD}
+  JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+  KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  SECUREBANK_DEMO_SEED: ${SECUREBANK_DEMO_SEED:-false}
+  LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
+  JAVA_OPTS: -XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError
+
+x-backend-healthcheck: &backend-healthcheck
+  interval: 10s
+  timeout: 5s
+  retries: 30
+  start_period: 40s
+
+x-infra-ready: &infra-ready
+  postgres:
+    condition: service_healthy
+  redis:
+    condition: service_healthy
+  kafka-init:
+    condition: service_completed_successfully
+
 services:
+  # ---------------------------------------------------------------- infrastructure
   postgres:
     image: postgres:17-alpine
     environment:
@@ -61,6 +89,131 @@ services:
       interval: 10s
       timeout: 10s
       retries: 20
+
+  # Creates the versioned topics explicitly (docs/contracts/events.md), then exits.
+  kafka-init:
+    image: apache/kafka:3.9.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        for t in bank.transaction.completed.v1 bank.transaction.failed.v1 bank.fraud.alert.created.v1 \
+                 bank.account.status.changed.v1 bank.audit.event.v1 bank.user.registered.v1; do
+          /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists \
+            --topic "$$t" --partitions 3 --replication-factor 1
+        done
+    restart: "no"
+
+  # ---------------------------------------------------------------- services
+  identity-service:
+    build: { context: ./backend, dockerfile: Dockerfile, args: { MODULE: identity-service } }
+    environment:
+      <<: *backend-env
+      DB_URL: jdbc:postgresql://postgres:5432/identity
+    depends_on: *infra-ready
+    healthcheck:
+      <<: *backend-healthcheck
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health/readiness | grep -q UP"]
+
+  banking-core-service:
+    build: { context: ./backend, dockerfile: Dockerfile, args: { MODULE: banking-core-service } }
+    environment:
+      <<: *backend-env
+      DB_URL: jdbc:postgresql://postgres:5432/banking
+    depends_on: *infra-ready
+    healthcheck:
+      <<: *backend-healthcheck
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8082/actuator/health/readiness | grep -q UP"]
+
+  fraud-service:
+    build: { context: ./backend, dockerfile: Dockerfile, args: { MODULE: fraud-service } }
+    environment:
+      <<: *backend-env
+      DB_URL: jdbc:postgresql://postgres:5432/fraud
+    depends_on: *infra-ready
+    healthcheck:
+      <<: *backend-healthcheck
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8083/actuator/health/readiness | grep -q UP"]
+
+  audit-service:
+    build: { context: ./backend, dockerfile: Dockerfile, args: { MODULE: audit-service } }
+    environment:
+      <<: *backend-env
+      DB_URL: jdbc:postgresql://postgres:5432/audit
+    depends_on: *infra-ready
+    healthcheck:
+      <<: *backend-healthcheck
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8084/actuator/health/readiness | grep -q UP"]
+
+  notification-service:
+    build: { context: ./backend, dockerfile: Dockerfile, args: { MODULE: notification-service } }
+    environment:
+      <<: *backend-env
+      DB_URL: jdbc:postgresql://postgres:5432/notification
+    depends_on: *infra-ready
+    healthcheck:
+      <<: *backend-healthcheck
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8085/actuator/health/readiness | grep -q UP"]
+
+  api-gateway:
+    build: { context: ./backend, dockerfile: Dockerfile, args: { MODULE: api-gateway } }
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      IDENTITY_URL: http://identity-service:8081
+      BANKING_CORE_URL: http://banking-core-service:8082
+      FRAUD_URL: http://fraud-service:8083
+      AUDIT_URL: http://audit-service:8084
+      NOTIFICATION_URL: http://notification-service:8085
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+      LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
+    depends_on:
+      redis: { condition: service_healthy }
+      identity-service: { condition: service_healthy }
+      banking-core-service: { condition: service_healthy }
+      fraud-service: { condition: service_healthy }
+      audit-service: { condition: service_healthy }
+      notification-service: { condition: service_healthy }
+    healthcheck:
+      <<: *backend-healthcheck
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health/readiness | grep -q UP"]
+
+  frontend:
+    build: { context: ./frontend, dockerfile: ../infra/frontend/Dockerfile }
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./infra/frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      api-gateway: { condition: service_healthy }
+
+  # ---------------------------------------------------------------- observability
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - api-gateway
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    ports:
+      - "3001:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
+    volumes:
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
 
 volumes:
   postgres-data:
