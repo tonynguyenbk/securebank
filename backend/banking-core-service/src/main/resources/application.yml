@@ -8,6 +8,9 @@ server:
 spring:
   application:
     name: banking-core-service
+  autoconfigure:
+    # stateless JWT only: no in-memory user / generated password
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   config:
     # Local runs (mvn spring-boot:run) pick up the repo-root .env; Docker passes real env vars.
     import: optional:file:.env[.properties],optional:file:../../.env[.properties]
@@ -15,6 +18,9 @@ spring:
     url: ${DB_URL:jdbc:postgresql://localhost:5433/banking}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  jackson:
+    generator:
+      write-bigdecimal-as-plain: true
   jpa:
     open-in-view: false
     hibernate:
@@ -48,6 +54,17 @@ securebank:
     revocation-check: true
   outbox:
     enabled: true
+  banking:
+    business-zone: Asia/Ho_Chi_Minh
+    default-per-transaction-limit: 100000000.00
+    default-daily-limit: 500000000.00
+    # max wait for an account row lock / a duplicate Idempotency-Key inside a transfer
+    lock-timeout: 5s
+    idempotency-retention: 24h
+    idempotency-cleanup-interval: 1h
+  demo:
+    # Seeds the two demo customers/accounts of docs/contracts/api.md §7. Local demo only.
+    seed: ${SECUREBANK_DEMO_SEED:false}
 
 management:
   endpoints:
