@@ -36,6 +36,8 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      timeout: 2s
+      connect-timeout: 2s
   threads:
     virtual:
       enabled: true
@@ -48,6 +50,13 @@ securebank:
     revocation-check: true
   outbox:
     enabled: true
+  identity:
+    bcrypt-strength: 12
+    login-rate-limit:
+      max-failures: 5
+      window: 5m
+  demo:
+    seed: ${SECUREBANK_DEMO_SEED:false}
 
 management:
   endpoints:
