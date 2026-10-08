@@ -1,0 +1,49 @@
+{
+  "brand": "SecureBank",
+  "theme": {
+    "system": "System theme",
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "switch": "{{current}}. Switch to {{next}}"
+  },
+  "lang": {
+    "label": "Language",
+    "en": "EN",
+    "vi": "VI"
+  },
+  "login": {
+    "band": "Online banking",
+    "title": "Sign in to online banking",
+    "subtitle": "Customers and bank staff use the same sign-in. You'll land in the right portal for your role.",
+    "username": "Username",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "noAccount": "New customer?",
+    "register": "Open a demo account",
+    "required": "Enter your {{field}}.",
+    "demoTitle": "Demo accounts",
+    "demoHint": "Local demo data only. Select a row to fill the form.",
+    "colUser": "User",
+    "colRole": "Role",
+    "colAccount": "Account",
+    "useAccount": "Use {{user}}",
+    "backendOffline": "The banking server isn't connected to this preview yet. Sign-in will work once the backend is deployed or when you run it locally with Docker Compose."
+  },
+  "roles": {
+    "CUSTOMER": "Customer",
+    "BANK_STAFF": "Bank staff",
+    "AUDITOR": "Auditor",
+    "ADMIN": "Admin"
+  },
+  "preview": {
+    "badge": "Preview build",
+    "note": "UI under construction · data is not real"
+  },
+  "notFound": {
+    "title": "This page doesn't exist",
+    "back": "Go to sign-in"
+  }
+}

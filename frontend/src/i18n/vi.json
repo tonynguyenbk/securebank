@@ -1,0 +1,49 @@
+{
+  "brand": "SecureBank",
+  "theme": {
+    "system": "Giao diện theo hệ thống",
+    "light": "Giao diện sáng",
+    "dark": "Giao diện tối",
+    "switch": "{{current}}. Chuyển sang {{next}}"
+  },
+  "lang": {
+    "label": "Ngôn ngữ",
+    "en": "EN",
+    "vi": "VI"
+  },
+  "login": {
+    "band": "Ngân hàng điện tử",
+    "title": "Đăng nhập ngân hàng điện tử",
+    "subtitle": "Khách hàng và nhân viên ngân hàng dùng chung một cổng đăng nhập. Hệ thống tự đưa bạn vào đúng khu vực theo vai trò.",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "submit": "Đăng nhập",
+    "submitting": "Đang đăng nhập…",
+    "noAccount": "Chưa có tài khoản?",
+    "register": "Mở tài khoản demo",
+    "required": "Vui lòng nhập {{field}}.",
+    "demoTitle": "Tài khoản demo",
+    "demoHint": "Chỉ là dữ liệu demo nội bộ. Chọn một dòng để điền sẵn.",
+    "colUser": "Người dùng",
+    "colRole": "Vai trò",
+    "colAccount": "Số tài khoản",
+    "useAccount": "Dùng {{user}}",
+    "backendOffline": "Bản xem trước này chưa kết nối máy chủ ngân hàng. Đăng nhập sẽ hoạt động khi backend được triển khai hoặc khi bạn chạy cục bộ bằng Docker Compose."
+  },
+  "roles": {
+    "CUSTOMER": "Khách hàng",
+    "BANK_STAFF": "Nhân viên",
+    "AUDITOR": "Kiểm toán",
+    "ADMIN": "Quản trị"
+  },
+  "preview": {
+    "badge": "Bản xem trước",
+    "note": "Giao diện đang xây dựng · dữ liệu không thật"
+  },
+  "notFound": {
+    "title": "Trang này không tồn tại",
+    "back": "Về trang đăng nhập"
+  }
+}

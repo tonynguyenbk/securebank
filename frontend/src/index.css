@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — see docs/design/DESIGN_SYSTEM.md §3–4. Components use these, never raw hex.
+ * Light values live on :root; dark values apply for data-theme="dark", or for the OS dark preference
+ * unless the user explicitly picked light.
+ */
+:root {
+  color-scheme: light;
+  --paper: #f3f6f4;
+  --sheet: #ffffff;
+  --ink: #13201e;
+  --ink-2: #4a5a57;
+  --rule: #d3dcd8;
+  --vault: #0d5c55;
+  --vault-deep: #0a4843;
+  --vault-tint: #e2efec;
+  --on-vault: #ffffff;
+  --credit: #11734b;
+  --debit: #9e2a1e;
+  --brass: #9a6b12;
+  --band: #0d5c55;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #0d1615;
+  --sheet: #142120;
+  --ink: #e4ece9;
+  --ink-2: #9cafaa;
+  --rule: #283936;
+  --vault: #5dbcaf;
+  --vault-deep: #7ccdc1;
+  --vault-tint: #1b3330;
+  --on-vault: #0d1615;
+  --credit: #57c793;
+  --debit: #f08070;
+  --brass: #dcae55;
+  --band: #0f3f3a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --paper: #0d1615;
+    --sheet: #142120;
+    --ink: #e4ece9;
+    --ink-2: #9cafaa;
+    --rule: #283936;
+    --vault: #5dbcaf;
+    --vault-deep: #7ccdc1;
+    --vault-tint: #1b3330;
+    --on-vault: #0d1615;
+    --credit: #57c793;
+    --debit: #f08070;
+    --brass: #dcae55;
+    --band: #0f3f3a;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-rule: var(--rule);
+  --color-vault: var(--vault);
+  --color-vault-deep: var(--vault-deep);
+  --color-vault-tint: var(--vault-tint);
+  --color-on-vault: var(--on-vault);
+  --color-credit: var(--credit);
+  --color-debit: var(--debit);
+  --color-brass: var(--brass);
+  --color-band: var(--band);
+}
+
+@theme {
+
+  --font-display: 'Be Vietnam Pro', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --radius-sheet: 6px;
+}
+
+@layer base {
+  html {
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-paper text-ink font-sans;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-vault);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility figures {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
