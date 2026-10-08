@@ -1,21 +1,67 @@
 server:
   port: ${PORT:8080}
+  shutdown: graceful
+  error:
+    include-stacktrace: never
+    include-message: never
 
 spring:
   application:
     name: api-gateway
   config:
     import: optional:file:.env[.properties],optional:file:../../.env[.properties]
+  reactor:
+    # Copies the Reactor context "correlationId" into the MDC for log lines.
+    context-propagation: auto
   data:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      # Short timeouts: the rate limiter fails open when Redis is slow/down instead of stalling requests.
+      timeout: 500ms
+      connect-timeout: 1s
   cloud:
     gateway:
       server:
         webflux:
-          # Route table = docs/contracts/api.md §0. Order matters: specific admin paths before the catch-all.
+          httpclient:
+            connect-timeout: 3000
+            response-timeout: 30s
+          # Since SCG 4.1 X-Forwarded-* headers are only written when trusted-proxies is set (otherwise stripped).
+          # The TCP peer address is appended to X-Forwarded-For when the peer matches this regex (loopback /
+          # private networks: local dev, frontend proxy, Docker network); incoming X-Forwarded-For entries are
+          # kept only if they match it too, so clients cannot forge the IP services rate-limit and audit.
+          # Override with GATEWAY_TRUSTED_PROXIES when deployed behind a known load balancer.
+          trusted-proxies: ${GATEWAY_TRUSTED_PROXIES:127\.0\.0\.1|0:0:0:0:0:0:0:1|::1|10\..*|172\.(1[6-9]|2[0-9]|3[0-1])\..*|192\.168\..*}
+          x-forwarded:
+            enabled: true
+            for-append: true
+          # Route table = docs/contracts/api.md §0. Order matters: rate-limited routes first.
           routes:
+            - id: identity-login
+              uri: ${IDENTITY_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/auth/login
+                - Method=POST
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@clientIpKeyResolver}"
+                    redis-rate-limiter.replenishRate: ${RATE_LIMIT_LOGIN_REPLENISH_RATE:5}
+                    redis-rate-limiter.burstCapacity: ${RATE_LIMIT_LOGIN_BURST_CAPACITY:10}
+                    redis-rate-limiter.requestedTokens: 1
+            - id: transfers-create
+              uri: ${BANKING_CORE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/transfers
+                - Method=POST
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@clientIpKeyResolver}"
+                    redis-rate-limiter.replenishRate: ${RATE_LIMIT_TRANSFER_REPLENISH_RATE:5}
+                    redis-rate-limiter.burstCapacity: ${RATE_LIMIT_TRANSFER_BURST_CAPACITY:10}
+                    redis-rate-limiter.requestedTokens: 1
             - id: identity
               uri: ${IDENTITY_URL:http://localhost:8081}
               predicates:
@@ -45,11 +91,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus,gateway
+        # "gateway" is intentionally not exposed: it allows creating/deleting routes at runtime.
+        include: health,info,metrics,prometheus
   endpoint:
     health:
       probes:
         enabled: true
+  health:
+    # Redis only backs the rate limiter (fails open); its outage must not mark the gateway DOWN.
+    redis:
+      enabled: false
   metrics:
     tags:
       application: ${spring.application.name}

@@ -1,0 +1,17 @@
+# Test profile: Testcontainers provide PostgreSQL/Redis via @ServiceConnection; Kafka is not used
+# (the outbox publisher is off, tests assert outbox rows directly).
+securebank:
+  security:
+    jwt:
+      secret: test-only-secret-not-used-anywhere-else-0123456789abcdef
+  outbox:
+    enabled: false
+  demo:
+    seed: false
+  identity:
+    # Keep tests fast; production uses 12.
+    bcrypt-strength: 4
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:1
