@@ -15,7 +15,7 @@ Last updated: 2026-10-08
 |---|---|---|---|
 | 0 | Repo, CI, deploy pipeline | [x] | GitHub repo + green CI badge + preview URL |
 | 1 | Bootstrap (Maven, Vite, Compose infra) | [x] | Skeleton app at preview URL |
-| 2 | Identity service | [ ] | — (API) |
+| 2 | Identity service (+ gateway) | [x] | — (API) |
 | 3 | Banking core basic | [ ] | — (API) |
 | 4 | Transfer engine | [ ] | — (API + tests in CI) |
 | 5 | Outbox + Kafka | [ ] | — |
@@ -68,13 +68,13 @@ Last updated: 2026-10-08
 - [x] ✅ Check: `./mvnw -q package -DskipTests` and `npm run build` pass; common unit tests pass
 
 ## Phase 2 — Identity service
-- [ ] Flyway: `users`, `roles`, `user_roles`, `refresh_tokens`
-- [ ] Register / login / refresh / logout / me
-- [ ] BCrypt, JWT (uid, username, roles, jti), refresh token stored as SHA-256 hash, rotation on refresh
-- [ ] Logout → refresh revoke + access `jti` denylist in Redis
-- [ ] Login rate limit in Redis (5 attempts / 5 min per username+IP) → 429
-- [ ] Demo seed (profile `demo`): customer1/2, staff1, auditor1, admin1
-- [ ] Tests: `JwtServiceTest`, auth controller integration test (Testcontainers)
+- [x] Flyway: `users`, `roles`, `user_roles`, `refresh_tokens`
+- [x] Register / login / refresh / logout / me
+- [x] BCrypt, JWT (uid, username, roles, jti), refresh token stored as SHA-256 hash, rotation on refresh
+- [x] Logout → refresh revoke + access `jti` denylist in Redis
+- [x] Login rate limit in Redis (5 attempts / 5 min per username+IP) → 429
+- [x] Demo seed (profile `demo`): customer1/2, staff1, auditor1, admin1
+- [x] Tests: `JwtServiceTest`, auth controller integration test (Testcontainers)
 
 ## Phase 3 — Banking core basic
 - [ ] Flyway V1–V8 per spec §41
@@ -198,6 +198,7 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-09 — Agent A merged (identity + gateway): 68 tests green after merge (common 9, identity 43, gateway 16). Notes: BCrypt >72-byte passwords pre-hashed with SHA-256; gateway trusts only private-range proxies for X-Forwarded-For; gateway actuator route endpoint not exposed.
 - 2026-10-08 — Wave 0 done: Maven multi-module + common module, API/event contracts, compose infra, CI. Wave 1 agents launched.
 - 2026-10-08 — Plan and design system drafted. Parallel multi-agent plan added. Deploy = Option A (GitHub Pages). UI = bilingual EN/VI + dark mode.
 - 2026-10-08 — First deploy live: login page (EN/VI, light/dark/system), build `d00d403`. Display font switched to Be Vietnam Pro (Vietnamese diacritics).
