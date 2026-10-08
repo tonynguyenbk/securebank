@@ -13,8 +13,8 @@ Last updated: 2026-10-08
 
 | # | Phase | Status | Live-visible result after push |
 |---|---|---|---|
-| 0 | Repo, CI, deploy pipeline | [~] | GitHub repo + green CI badge + preview URL |
-| 1 | Bootstrap (Maven, Vite, Compose infra) | [ ] | Skeleton app at preview URL |
+| 0 | Repo, CI, deploy pipeline | [x] | GitHub repo + green CI badge + preview URL |
+| 1 | Bootstrap (Maven, Vite, Compose infra) | [x] | Skeleton app at preview URL |
 | 2 | Identity service | [ ] | — (API) |
 | 3 | Banking core basic | [ ] | — (API) |
 | 4 | Transfer engine | [ ] | — (API + tests in CI) |
@@ -38,9 +38,10 @@ Last updated: 2026-10-08
 | JDK | Local JDK is 25; build with `--release 21` | Spec requires Java 21 bytecode/language level |
 | Maven | Maven Wrapper (`mvnw`) committed; no global `mvn` installed | Reproducible builds, CI-friendly |
 | Spring | Spring Boot 3.5.x + Spring Cloud 2025.0 (Gateway, WebFlux) | Latest 3.x line with JDK 21–25 support |
+| Contracts | `docs/contracts/api.md` + `events.md`, event records in `common` | Frozen before parallel work |
 | Lombok | Not used — Java `record` DTOs + constructor injection | Avoids annotation-processor issues on JDK 25; records are clearer |
 | Gateway | Spring Cloud Gateway (reactive) | Compatible with Boot 3.5 |
-| Postgres | One container, 5 databases (identity, banking, fraud, audit, notification) | Spec allows it; lower RAM |
+| Postgres | One container, 5 databases (identity, banking, fraud, audit, notification); host port 5433 | Spec allows it; 5432 is taken by a local PostgreSQL 18 service on the dev machine |
 | Kafka | `apache/kafka` image, KRaft single node | No ZooKeeper |
 | JWT | HS256, shared secret from env `JWT_SECRET`, validated in every service | Simple, documented; RS256 listed as future improvement |
 | Token storage (FE) | Access token in memory, refresh token in `sessionStorage` | Tradeoff documented in `docs/security.md` |
@@ -53,18 +54,18 @@ Last updated: 2026-10-08
 ## Phase 0 — Repository, CI, deploy pipeline
 - [x] `git init`, `.gitignore`, `.gitattributes` (LF for `*.sh`, `mvnw`)
 - [x] Create GitHub repo `securebank` (account `tonynguyenbk`) and push `main` → https://github.com/tonynguyenbk/securebank
-- [ ] GitHub Actions `ci.yml` (frontend lint+build already runs in deploy workflow; backend added in Phase 1): backend `./mvnw verify` (Testcontainers on ubuntu runner) + frontend `npm ci && npm run build && npm run lint`
+- [x] GitHub Actions `ci.yml`: backend `./mvnw verify` (Testcontainers) + frontend lint/build: backend `./mvnw verify` (Testcontainers on ubuntu runner) + frontend `npm ci && npm run build && npm run lint`
 - [x] GitHub Actions `deploy-preview.yml`: build frontend with `VITE_API_MODE=mock` and publish to GitHub Pages on every push to `main` (SPA fallback via `404.html`, base `/securebank/`)
 - [x] README badge + preview link → **https://tonynguyenbk.github.io/securebank/**
 
 ## Phase 1 — Bootstrap
-- [ ] Monorepo folders: `backend/ frontend/ infra/ scripts/ docs/`
-- [ ] `backend/pom.xml` parent + 6 modules + shared `common` module (error format, correlation filter, JWT validation)
-- [ ] Each service: `Application`, `application.yml`, actuator health, springdoc
-- [ ] `frontend/`: Vite + React + TS + Tailwind with design tokens from DESIGN_SYSTEM §3–4
-- [ ] `docker-compose.yml` infra: postgres (+ init script for 5 DBs), redis, kafka
-- [ ] `.env.example`
-- [ ] ✅ Check: `./mvnw -q package -DskipTests` and `npm run build` pass
+- [x] Monorepo folders: `backend/ frontend/ infra/ docs/` (`scripts/` in Phase 11)
+- [x] `backend/pom.xml` parent (Boot 3.5.16, Cloud 2025.0.3) + 6 modules + `common` (ApiError/ErrorCode, correlation filter, JWT validator + filter, outbox writer/publisher, processed-events store, event records, autoconfig)
+- [x] Each service: `Application`, `application.yml`, actuator health, springdoc (audit-service smoke-run: health UP, shared Flyway migrations applied)
+- [x] `frontend/`: Vite + React + TS + Tailwind with design tokens from DESIGN_SYSTEM §3–4
+- [x] `docker-compose.yml` infra: postgres (+ init script for 5 DBs, host port **5433**), redis, kafka (KRaft)
+- [x] `.env.example` (services also read the root `.env` via `spring.config.import`)
+- [x] ✅ Check: `./mvnw -q package -DskipTests` and `npm run build` pass; common unit tests pass
 
 ## Phase 2 — Identity service
 - [ ] Flyway: `users`, `roles`, `user_roles`, `refresh_tokens`
@@ -197,5 +198,6 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-08 — Wave 0 done: Maven multi-module + common module, API/event contracts, compose infra, CI. Wave 1 agents launched.
 - 2026-10-08 — Plan and design system drafted. Parallel multi-agent plan added. Deploy = Option A (GitHub Pages). UI = bilingual EN/VI + dark mode.
 - 2026-10-08 — First deploy live: login page (EN/VI, light/dark/system), build `d00d403`. Display font switched to Be Vietnam Pro (Vietnamese diacritics).

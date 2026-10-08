@@ -1,0 +1,59 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:file:.env[.properties],optional:file:../../.env[.properties]
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cloud:
+    gateway:
+      server:
+        webflux:
+          # Route table = docs/contracts/api.md §0. Order matters: specific admin paths before the catch-all.
+          routes:
+            - id: identity
+              uri: ${IDENTITY_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/auth/**
+            - id: fraud
+              uri: ${FRAUD_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/v1/fraud/**
+            - id: audit
+              uri: ${AUDIT_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/v1/audit/**
+            - id: notification
+              uri: ${NOTIFICATION_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/v1/notifications/**
+            - id: banking-core
+              uri: ${BANKING_CORE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/customers/**,/api/v1/accounts/**,/api/v1/transfers/**,/api/v1/admin/**
+
+securebank:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,gateway
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{correlationId:-}]"
