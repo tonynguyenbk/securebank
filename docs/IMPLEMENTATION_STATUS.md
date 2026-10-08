@@ -19,9 +19,9 @@ Last updated: 2026-10-08
 | 3 | Banking core basic | [ ] | — (API) |
 | 4 | Transfer engine | [ ] | — (API + tests in CI) |
 | 5 | Outbox + Kafka | [ ] | — |
-| 6 | Fraud service | [ ] | — |
-| 7 | Audit service | [ ] | — |
-| 8 | Notification service | [ ] | — |
+| 6 | Fraud service | [x] | — |
+| 7 | Audit service | [x] | — |
+| 8 | Notification service | [x] | — |
 | 9 | Frontend — customer portal | [ ] | Login, dashboard, transfer, receipt |
 | 10 | Frontend — ops portal | [ ] | Fraud queue, accounts, audit |
 | 11 | Dockerization (full compose) | [ ] | `docker compose up --build` works |
@@ -102,20 +102,20 @@ Last updated: 2026-10-08
 - [ ] Test: publisher publishes (Kafka Testcontainer); metrics `outbox_pending_count`, `kafka_publish_failure_total`
 
 ## Phase 6 — Fraud service
-- [ ] Consumer `bank.transaction.completed.v1`, `processed_events` table for idempotency
-- [ ] Rules A–D (Redis sliding window for B, Redis daily sum for C, Redis set for D)
-- [ ] Alerts + rule hits; risk levels; publishes `bank.fraud.alert.created.v1`
-- [ ] API list/detail/review (STAFF/ADMIN review, AUDITOR read-only)
-- [ ] Tests: `FraudRuleEngineTest`, consumer idempotency test
+- [x] Consumer `bank.transaction.completed.v1`, `processed_events` table for idempotency
+- [x] Rules A–D (Redis sliding window for B, Redis daily sum for C, Redis set for D)
+- [x] Alerts + rule hits; risk levels; publishes `bank.fraud.alert.created.v1`
+- [x] API list/detail/review (STAFF/ADMIN review, AUDITOR read-only)
+- [x] Tests: `FraudRuleEngineTest`, consumer idempotency test
 
 ## Phase 7 — Audit service
-- [ ] Consumer `bank.audit.event.v1` (+ account status / fraud review events)
-- [ ] `audit_logs` append-only (no update/delete API; DB trigger blocks UPDATE/DELETE)
-- [ ] `GET /audit/logs` filters (actor, action, resourceType, date range, correlationId), `GET /audit/logs/{id}`
+- [x] Consumer `bank.audit.event.v1` (+ account status / fraud review events)
+- [x] `audit_logs` append-only (no update/delete API; DB trigger blocks UPDATE/DELETE)
+- [x] `GET /audit/logs` filters (actor, action, resourceType, date range, correlationId), `GET /audit/logs/{id}`
 
 ## Phase 8 — Notification service
-- [ ] Consumer transaction completed → notifications for sender & receiver (IN_APP + simulated EMAIL)
-- [ ] `GET /notifications/me`; idempotent by event ID
+- [x] Consumer transaction completed → notifications for sender & receiver (IN_APP + simulated EMAIL)
+- [x] `GET /notifications/me`; idempotent by event ID
 
 ## Phase 9 — Frontend: customer portal
 - [ ] Design tokens, fonts, base components (DESIGN_SYSTEM §7)
@@ -198,6 +198,7 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-09 — Agent C merged (fraud, audit, notification): 71 tests green after merge. Follow-ups for lead: map OptimisticLockingFailureException → 409 in common; dedupe copied Kafka consumer config/test helpers into common; poison messages are logged+skipped (no DLT).
 - 2026-10-09 — Agent A merged (identity + gateway): 68 tests green after merge (common 9, identity 43, gateway 16). Notes: BCrypt >72-byte passwords pre-hashed with SHA-256; gateway trusts only private-range proxies for X-Forwarded-For; gateway actuator route endpoint not exposed.
 - 2026-10-08 — Wave 0 done: Maven multi-module + common module, API/event contracts, compose infra, CI. Wave 1 agents launched.
 - 2026-10-08 — Plan and design system drafted. Parallel multi-agent plan added. Deploy = Option A (GitHub Pages). UI = bilingual EN/VI + dark mode.
