@@ -1,0 +1,20 @@
+# Integration-test overrides. Datasource, Redis and Kafka come from Testcontainers (@ServiceConnection).
+# Placeholders that application.yml expects from .env are defined here so tests never depend on a local .env.
+DB_USERNAME: test
+DB_PASSWORD: test
+JWT_SECRET: integration-test-secret-integration-test-secret-0123456789
+
+securebank:
+  security:
+    jwt:
+      secret: integration-test-secret-integration-test-secret-0123456789
+  demo:
+    seed: false
+  outbox:
+    poll-interval: 200ms
+  banking:
+    lock-timeout: 5s
+
+logging:
+  level:
+    org.apache.kafka: WARN

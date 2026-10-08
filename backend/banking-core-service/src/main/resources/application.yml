@@ -8,6 +8,9 @@ server:
 spring:
   application:
     name: banking-core-service
+  autoconfigure:
+    # stateless JWT only: no in-memory user / generated password
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   config:
     # Local runs (mvn spring-boot:run) pick up the repo-root .env; Docker passes real env vars.
     import: optional:file:.env[.properties],optional:file:../../.env[.properties]
