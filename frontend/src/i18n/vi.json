@@ -264,7 +264,15 @@
       "IN_APP": "Trong ứng dụng",
       "EMAIL": "Email",
       "SMS": "SMS"
-    }
+    },
+    "subtitle": "Thông báo về giao dịch và tài khoản của bạn.",
+    "channelLabel": "Kênh",
+    "unreadOnly": "Chỉ chưa đọc",
+    "markAll": "Đánh dấu tất cả đã đọc",
+    "allMarked": "Đã đánh dấu đọc tất cả thông báo trên trang này.",
+    "deliveryNote": "Bản sao đã gửi qua email và SMS, để bạn đối chiếu.",
+    "empty": "Chưa có thông báo nào.",
+    "emptyBody": "Mỗi giao dịch đi hoặc đến tài khoản của bạn đều có thông báo tại đây."
   },
   "pagination": {
     "label": "Phân trang",
@@ -419,5 +427,51 @@
       "min": "Số tiền từ",
       "max": "Số tiền đến"
     }
+  },
+  "accounts": {
+    "title": "Tài khoản",
+    "subtitle": "Các tài khoản thanh toán, số dư và sổ tài khoản của bạn.",
+    "summary": "Danh sách tài khoản",
+    "total": "Tổng số dư",
+    "back": "Về danh sách tài khoản",
+    "currency": "Loại tiền",
+    "updated": "Biến động gần nhất",
+    "col": {
+      "number": "Số tài khoản",
+      "type": "Loại",
+      "opened": "Ngày mở",
+      "status": "Trạng thái",
+      "balance": "Số dư"
+    }
+  },
+  "statement": {
+    "title": "Sổ tài khoản",
+    "filter": "Lọc sao kê",
+    "empty": "Không có bút toán trong khoảng thời gian này.",
+    "emptyBody": "Các biến động sẽ hiện ở đây ngay khi được ghi sổ.",
+    "note": "Số dư sau mỗi bút toán. Số dư đầu kỳ được ghi khi mở tài khoản; mọi biến động sau đó đều là bút toán trên sổ cái.",
+    "col": {
+      "date": "Ngày",
+      "reference": "Mã giao dịch",
+      "particulars": "Diễn giải",
+      "debit": "Ghi nợ",
+      "credit": "Ghi có",
+      "balance": "Số dư"
+    }
+  },
+  "profile": {
+    "title": "Hồ sơ & bảo mật",
+    "subtitle": "Thông tin khách hàng, phiên đăng nhập và tuỳ chọn hiển thị.",
+    "customer": "Thông tin khách hàng",
+    "customerSince": "Khách hàng từ",
+    "customerId": "Mã khách hàng",
+    "security": "Đăng nhập và phiên làm việc",
+    "roles": "Quyền truy cập",
+    "session": "Phiên hiện tại",
+    "sessionUntil": "Đang hoạt động, tự gia hạn (mã truy cập có hiệu lực đến {{time}})",
+    "tokenNote": "Mã truy cập ngắn hạn chỉ được giữ trong bộ nhớ của tab này. Mã làm mới lưu trong session storage của tab giúp bạn không phải đăng nhập lại khi tải lại trang, và bị xoá khi bạn đăng xuất hoặc đóng tab.",
+    "preferences": "Hiển thị",
+    "theme": "Giao diện",
+    "prefsNote": "Số tiền luôn hiển thị theo kiểu Việt Nam (25.000.000 ₫); thời gian hiển thị theo giờ Việt Nam (UTC+7)."
   }
 }

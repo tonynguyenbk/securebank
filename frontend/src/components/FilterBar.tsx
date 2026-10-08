@@ -54,7 +54,7 @@ export function FilterBar({ defs, values, onApply, label }: Props) {
         {active && <span className="figures ml-auto text-[12px] text-vault">{activeCount}</span>}
       </button>
       <div className={`${open ? 'mt-3 block' : 'hidden'} sm:mt-0 sm:block`}>
-      <div className="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+      <div className="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
         {defs.map((d) => (
           <Field key={d.name} label={<span className="text-[12px] text-ink-2">{d.label}</span>}>
             {(s) => {

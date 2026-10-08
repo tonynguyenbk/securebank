@@ -14,6 +14,8 @@ export type Column<T> = {
   sortField?: string
   /** How the column shows in the stacked (< 768 px) layout. */
   mobile?: 'title' | 'end' | 'field' | 'hidden'
+  /** Only used by the stacked (< 768 px) layout. */
+  mobileOnly?: boolean
 }
 
 export type Sort = { field: string; dir: 'asc' | 'desc' }
@@ -67,6 +69,7 @@ export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, o
     )
   }
 
+  const tableColumns = columns.filter((c) => !c.mobileOnly)
   const body = loading && !rows
   const isEmpty = !body && rows && rows.length === 0
 
@@ -77,7 +80,7 @@ export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, o
         <caption className="sr-only">{caption}</caption>
         <thead>
           <tr className="border-b border-ink">
-            {columns.map((c) => (
+            {tableColumns.map((c) => (
               <th
                 key={c.key}
                 scope="col"
@@ -93,7 +96,7 @@ export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, o
           {body &&
             Array.from({ length: 6 }, (_, i) => (
               <tr key={i} className="border-b border-rule">
-                {columns.map((c) => (
+                {tableColumns.map((c) => (
                   <td key={c.key} className={`${pad} pr-4 last:pr-0`}>
                     <Skeleton className={`h-3 ${c.align === 'right' ? 'ml-auto w-20' : 'w-3/4'}`} />
                   </td>
@@ -106,7 +109,7 @@ export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, o
               onClick={go(row)}
               className={`border-b border-rule transition-colors duration-150 ${rowHref ? 'cursor-pointer hover:bg-vault-tint/60' : ''} ${rowClassName?.(row) ?? ''}`}
             >
-              {columns.map((c) => (
+              {tableColumns.map((c) => (
                 <td key={c.key} className={`${pad} pr-4 align-middle last:pr-0 ${c.align === 'right' ? 'text-right' : ''} ${c.className ?? ''}`}>
                   {c.cell(row)}
                 </td>

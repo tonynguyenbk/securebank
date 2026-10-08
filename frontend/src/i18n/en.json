@@ -264,7 +264,15 @@
       "IN_APP": "In app",
       "EMAIL": "Email",
       "SMS": "SMS"
-    }
+    },
+    "subtitle": "Notices about your transfers and accounts.",
+    "channelLabel": "Channel",
+    "unreadOnly": "Unread only",
+    "markAll": "Mark all as read",
+    "allMarked": "All notices on this page are marked as read.",
+    "deliveryNote": "Copies sent by email and SMS, for your records.",
+    "empty": "No notifications yet.",
+    "emptyBody": "You'll get a notice here for every transfer in or out of your accounts."
   },
   "pagination": {
     "label": "Pages",
@@ -419,5 +427,51 @@
       "min": "Min amount",
       "max": "Max amount"
     }
+  },
+  "accounts": {
+    "title": "Accounts",
+    "subtitle": "Your current accounts, balances and passbooks.",
+    "summary": "All accounts",
+    "total": "Total balance",
+    "back": "Back to accounts",
+    "currency": "Currency",
+    "updated": "Last movement",
+    "col": {
+      "number": "Account number",
+      "type": "Type",
+      "opened": "Opened",
+      "status": "Status",
+      "balance": "Balance"
+    }
+  },
+  "statement": {
+    "title": "Passbook",
+    "filter": "Filter passbook",
+    "empty": "No entries in this period.",
+    "emptyBody": "Movements appear here as soon as they're posted.",
+    "note": "Running balance after each entry. The opening balance was set when the account was opened; every movement since then is a ledger entry.",
+    "col": {
+      "date": "Date",
+      "reference": "Reference",
+      "particulars": "Particulars",
+      "debit": "Debit",
+      "credit": "Credit",
+      "balance": "Balance"
+    }
+  },
+  "profile": {
+    "title": "Profile & security",
+    "subtitle": "Your customer details, how you're signed in, and display preferences.",
+    "customer": "Customer details",
+    "customerSince": "Customer since",
+    "customerId": "Customer ID",
+    "security": "Sign-in and session",
+    "roles": "Access",
+    "session": "Current session",
+    "sessionUntil": "Active, renews automatically (token valid until {{time}})",
+    "tokenNote": "Your short-lived access token is kept only in this tab's memory. A refresh token in this tab's session storage keeps you signed in across reloads and is cleared when you sign out or close the tab.",
+    "preferences": "Display",
+    "theme": "Theme",
+    "prefsNote": "Amounts always use Vietnamese grouping (25.000.000 ₫); times are shown in Vietnam time (UTC+7)."
   }
 }

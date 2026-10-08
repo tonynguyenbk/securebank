@@ -42,7 +42,7 @@ export function AppShell() {
           <Link to="/dashboard" className="shrink-0" aria-label={t('nav.home')}>
             <Wordmark />
           </Link>
-          <nav aria-label={t('nav.main')} className="hidden h-full items-center gap-6 md:flex">
+          <nav aria-label={t('nav.main')} className="hidden h-full items-center gap-6 lg:flex">
             {NAV.map((n) => (
               <NavLink key={n.to} to={n.to} className={link}>
                 {t(n.key)}
@@ -70,7 +70,7 @@ export function AppShell() {
             <UserMenu />
             <button
               type="button"
-              className="inline-flex size-9 cursor-pointer items-center justify-center rounded-sheet border border-rule md:hidden"
+              className="inline-flex size-9 cursor-pointer items-center justify-center rounded-sheet border border-rule lg:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
               aria-label={menuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
@@ -81,7 +81,7 @@ export function AppShell() {
           </div>
         </div>
         {menuOpen && (
-          <nav id="mobile-nav" aria-label={t('nav.main')} className="border-t border-rule bg-paper px-4 pb-4 md:hidden">
+          <nav id="mobile-nav" aria-label={t('nav.main')} className="border-t border-rule bg-paper px-4 pb-4 lg:hidden">
             <ul>
               {NAV.map((n) => (
                 <li key={n.to} className="border-b border-rule">
