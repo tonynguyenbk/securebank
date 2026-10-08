@@ -28,6 +28,8 @@ export const ERROR_CODES = {
   IDEMPOTENCY_KEY_REQUIRED: [400, 'The Idempotency-Key header is required.'],
   IDEMPOTENCY_KEY_CONFLICT: [409, 'The idempotency key was already used with a different request.'],
   IDEMPOTENCY_REQUEST_IN_PROGRESS: [409, 'A request with this idempotency key is still being processed.'],
+  ACCOUNT_BUSY: [409, 'The account is busy with another transfer. Retry with the same Idempotency-Key.'],
+  CONCURRENT_UPDATE: [409, 'The record was changed by someone else. Reload and try again.'],
   TRANSACTION_NOT_FOUND: [404, 'Transaction not found.'],
   FRAUD_ALERT_NOT_FOUND: [404, 'Fraud alert not found.'],
   FRAUD_ALERT_INVALID_TRANSITION: [409, 'The fraud alert cannot move to the requested status.'],

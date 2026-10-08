@@ -194,7 +194,8 @@
     "time": "Thời gian ghi sổ",
     "remaining": "Số dư còn lại",
     "reason": "Lý do",
-    "footer": "Vui lòng lưu phiếu này để đối chiếu"
+    "footer": "Vui lòng lưu phiếu này để đối chiếu",
+    "processed": "Thời gian xử lý"
   },
   "activity": {
     "to": "Đến",
@@ -313,6 +314,8 @@
     "IDEMPOTENCY_KEY_REQUIRED": "Không xác định được lệnh chuyển. Hãy tải lại trang rồi thử lại.",
     "IDEMPOTENCY_KEY_CONFLICT": "Lần gửi này đã được dùng cho một lệnh chuyển khác. Hãy kiểm tra lại thông tin và gửi lại.",
     "IDEMPOTENCY_REQUEST_IN_PROGRESS": "Lệnh chuyển của bạn vẫn đang được xử lý. Vui lòng đợi một lát rồi kiểm tra lại.",
+    "ACCOUNT_BUSY": "Tài khoản đang xử lý một giao dịch khác. Vui lòng thử lại sau giây lát — thao tác an toàn, bạn sẽ không bị trừ tiền hai lần.",
+    "CONCURRENT_UPDATE": "Bản ghi vừa được người khác cập nhật. Hãy tải lại để xem phiên bản mới nhất rồi thử lại.",
     "TRANSACTION_NOT_FOUND": "Không tìm thấy giao dịch này.",
     "FRAUD_ALERT_NOT_FOUND": "Không tìm thấy cảnh báo gian lận này.",
     "FRAUD_ALERT_INVALID_TRANSITION": "Cảnh báo không thể chuyển sang trạng thái đó từ trạng thái hiện tại. Hãy tải lại để xem trạng thái mới nhất.",
@@ -322,5 +325,99 @@
     "TIMEOUT": "Ngân hàng phản hồi quá lâu. Vui lòng thử lại.",
     "BACKEND_UNAVAILABLE": "Máy chủ ngân hàng tạm thời không truy cập được. Vui lòng thử lại sau.",
     "UNKNOWN_ERROR": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại."
+  },
+  "limits": {
+    "daily": "Đã dùng hôm nay",
+    "remaining": "Còn lại hôm nay",
+    "perTx": "mỗi giao dịch"
+  },
+  "transfer": {
+    "title": "Chuyển tiền",
+    "subtitle": "Chuyển khoản nội bộ giữa các tài khoản SecureBank bằng VND. Ghi sổ ngay lập tức.",
+    "noAccounts": "Bạn chưa có tài khoản để chuyển tiền.",
+    "noAccountsBody": "Khi tài khoản thanh toán được mở, bạn có thể chuyển tiền tại đây.",
+    "source": "Tài khoản nguồn",
+    "destination": "Số tài khoản người thụ hưởng",
+    "destinationHint": "Gồm 10 chữ số. Hệ thống sẽ hiện tên chủ tài khoản để bạn kiểm tra.",
+    "amount": "Số tiền",
+    "available": "Khả dụng:",
+    "description": "Nội dung chuyển khoản",
+    "descriptionPh": "VD: Tiền nhà tháng 10",
+    "reviewNote": "Tiền chỉ được chuyển sau khi bạn xác nhận ở bước tiếp theo.",
+    "reviewCta": "Kiểm tra giao dịch",
+    "fromAccount": "Chuyển từ",
+    "after": "Sau giao dịch:",
+    "safetyTitle": "Kiểm tra trước khi chuyển",
+    "safetyBody": "Hãy chắc chắn tên chủ tài khoản đúng người bạn muốn chuyển. Ngân hàng không bao giờ yêu cầu bạn chuyển tiền sang \"tài khoản an toàn\".",
+    "lookup": {
+      "checking": "Đang kiểm tra tài khoản…",
+      "holder": "Chủ tài khoản:",
+      "notFound": "Không có tài khoản với số này."
+    },
+    "errors": {
+      "sourceRequired": "Chọn tài khoản nguồn.",
+      "destinationRequired": "Nhập số tài khoản người thụ hưởng.",
+      "destinationFormat": "Số tài khoản gồm đúng 10 chữ số.",
+      "descriptionLength": "Nội dung không quá 255 ký tự."
+    },
+    "review": {
+      "title": "Xác nhận giao dịch",
+      "subtitle": "Vui lòng kiểm tra từng dòng. Giao dịch đã ghi sổ không thể huỷ.",
+      "from": "Từ tài khoản",
+      "to": "Đến",
+      "description": "Nội dung",
+      "amount": "Số tiền",
+      "balanceAfter": "Số dư sau giao dịch",
+      "edit": "Sửa thông tin",
+      "confirm": "Xác nhận chuyển",
+      "sending": "Đang chuyển…",
+      "retry": "Gửi lại an toàn",
+      "sameKey": "Khi gửi lại, hệ thống dùng đúng yêu cầu và mã tham chiếu cũ, nên tiền chỉ có thể được chuyển một lần.",
+      "key": "Mã yêu cầu"
+    },
+    "receipt": {
+      "eyebrow": "Đã chuyển",
+      "title": "Đã chuyển tiền cho {{name}}",
+      "replayed": "Đây là biên lai gốc của một yêu cầu đã được xử lý trước đó. Tiền không bị chuyển lần thứ hai.",
+      "print": "In biên lai",
+      "another": "Giao dịch mới",
+      "view": "Xem trong lịch sử"
+    },
+    "toast": {
+      "sent": "Chuyển tiền thành công. Phiếu hạch toán ở bên dưới.",
+      "rejected": "Ngân hàng đã từ chối giao dịch. Tài khoản của bạn không bị trừ tiền."
+    }
+  },
+  "transactions": {
+    "title": "Lịch sử giao dịch",
+    "subtitle": "Mọi giao dịch đi và đến các tài khoản của bạn. Giao dịch bị từ chối chỉ hiển thị với người chuyển.",
+    "back": "Về lịch sử giao dịch",
+    "outgoing": "Chuyển đi",
+    "incoming": "Nhận về",
+    "details": "Chi tiết giao dịch",
+    "from": "Tài khoản chuyển",
+    "to": "Tài khoản nhận",
+    "counterparty": "Đối tác giao dịch",
+    "created": "Thời gian tạo",
+    "completed": "Thời gian hoàn tất",
+    "ledgerNote": "Mỗi giao dịch thành công ghi đúng hai bút toán: ghi Nợ tài khoản chuyển và ghi Có tài khoản nhận, cùng một số tiền.",
+    "emptyFiltered": "Hãy mở rộng khoảng thời gian hoặc xoá bộ lọc.",
+    "col": {
+      "date": "Ngày",
+      "reference": "Mã giao dịch",
+      "counterparty": "Đối tác",
+      "description": "Nội dung",
+      "amount": "Số tiền",
+      "status": "Trạng thái"
+    },
+    "filters": {
+      "label": "Lọc giao dịch",
+      "account": "Tài khoản",
+      "status": "Trạng thái",
+      "from": "Từ ngày",
+      "to": "Đến ngày",
+      "min": "Số tiền từ",
+      "max": "Số tiền đến"
+    }
   }
 }

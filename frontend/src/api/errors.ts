@@ -35,6 +35,9 @@ function isApiErrorBody(v: unknown): v is ApiErrorBody {
   return typeof v === 'object' && v !== null && typeof (v as ApiErrorBody).code === 'string' && typeof (v as ApiErrorBody).status === 'number'
 }
 
+/** Codes after which the same request (same Idempotency-Key) may safely be sent again. */
+const RETRY_SAME_KEY = new Set(['IDEMPOTENCY_REQUEST_IN_PROGRESS', 'ACCOUNT_BUSY'])
+
 export function normalizeError(err: unknown): ApiError {
   if (err instanceof ApiError) return err
   if (isAxiosError(err)) {
@@ -53,7 +56,7 @@ export function normalizeError(err: unknown): ApiError {
         message: data.message,
         correlationId: data.correlationId ?? correlationId,
         fieldErrors: data.fieldErrors,
-        transient: status >= 500 || data.code === 'IDEMPOTENCY_REQUEST_IN_PROGRESS',
+        transient: status >= 500 || RETRY_SAME_KEY.has(data.code),
       })
     }
     // No ApiError body: the gateway/proxy (or a static host without a backend) answered.

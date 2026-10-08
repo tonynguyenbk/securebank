@@ -194,7 +194,8 @@
     "time": "Posted at",
     "remaining": "Remaining balance",
     "reason": "Reason",
-    "footer": "Keep this slip for your records"
+    "footer": "Keep this slip for your records",
+    "processed": "Processed at"
   },
   "activity": {
     "to": "To",
@@ -313,6 +314,8 @@
     "IDEMPOTENCY_KEY_REQUIRED": "The transfer couldn't be identified. Reload the page and try again.",
     "IDEMPOTENCY_KEY_CONFLICT": "This submission was already used for a different transfer. Review the details and send again.",
     "IDEMPOTENCY_REQUEST_IN_PROGRESS": "Your transfer is still being processed. Wait a moment before checking again.",
+    "ACCOUNT_BUSY": "Another transfer from this account is being processed. Try again in a moment — it's safe, you won't be charged twice.",
+    "CONCURRENT_UPDATE": "Someone else changed this record while you were editing. Reload to see the latest version, then try again.",
     "TRANSACTION_NOT_FOUND": "We couldn't find this transaction.",
     "FRAUD_ALERT_NOT_FOUND": "We couldn't find this fraud alert.",
     "FRAUD_ALERT_INVALID_TRANSITION": "The alert can't move to that status from where it is now. Reload to see its current state.",
@@ -322,5 +325,99 @@
     "TIMEOUT": "The bank took too long to answer. Try again.",
     "BACKEND_UNAVAILABLE": "The banking server isn't reachable right now. Try again shortly.",
     "UNKNOWN_ERROR": "Something unexpected happened. Try again."
+  },
+  "limits": {
+    "daily": "Used today",
+    "remaining": "Left today",
+    "perTx": "per transfer"
+  },
+  "transfer": {
+    "title": "Send money",
+    "subtitle": "Internal transfer between SecureBank accounts, in VND. Posted instantly.",
+    "noAccounts": "You don't have an account to send from yet.",
+    "noAccountsBody": "Once your current account is open, you can send money from here.",
+    "source": "From account",
+    "destination": "Beneficiary account number",
+    "destinationHint": "10 digits. We'll show the holder's name so you can check it.",
+    "amount": "Amount",
+    "available": "Available:",
+    "description": "Description",
+    "descriptionPh": "e.g. Tiền nhà tháng 10",
+    "reviewNote": "Nothing is sent until you confirm on the next step.",
+    "reviewCta": "Review transfer",
+    "fromAccount": "Sending from",
+    "after": "After this transfer:",
+    "safetyTitle": "Check before you send",
+    "safetyBody": "Make sure the holder name matches the person you expect. The bank will never ask you to move money to a \"safe account\".",
+    "lookup": {
+      "checking": "Checking account…",
+      "holder": "Account holder:",
+      "notFound": "No account with this number."
+    },
+    "errors": {
+      "sourceRequired": "Choose the account to send from.",
+      "destinationRequired": "Enter the beneficiary's account number.",
+      "destinationFormat": "Account numbers have exactly 10 digits.",
+      "descriptionLength": "Keep the description under 255 characters."
+    },
+    "review": {
+      "title": "Review transfer",
+      "subtitle": "Check every line. Transfers can't be cancelled once posted.",
+      "from": "From",
+      "to": "To",
+      "description": "Description",
+      "amount": "Amount",
+      "balanceAfter": "Balance after",
+      "edit": "Edit details",
+      "confirm": "Confirm and send",
+      "sending": "Sending…",
+      "retry": "Retry safely",
+      "sameKey": "Retrying re-sends the same request with the same reference key, so the money can only move once.",
+      "key": "Request key"
+    },
+    "receipt": {
+      "eyebrow": "Sent",
+      "title": "Money sent to {{name}}",
+      "replayed": "This is the original receipt for a request that had already been processed. No money moved a second time.",
+      "print": "Print receipt",
+      "another": "New transfer",
+      "view": "View in activity"
+    },
+    "toast": {
+      "sent": "Sent. The ledger slip is below.",
+      "rejected": "The bank rejected this transfer. Nothing was debited."
+    }
+  },
+  "transactions": {
+    "title": "Activity",
+    "subtitle": "Every transfer in and out of your accounts. Rejected attempts appear only to the sender.",
+    "back": "Back to activity",
+    "outgoing": "Outgoing transfer",
+    "incoming": "Incoming transfer",
+    "details": "Transaction details",
+    "from": "From account",
+    "to": "To account",
+    "counterparty": "Counterparty",
+    "created": "Created",
+    "completed": "Completed",
+    "ledgerNote": "Each posted transfer writes exactly two ledger lines: a debit on the sender and a credit on the beneficiary, for the same amount.",
+    "emptyFiltered": "Try a wider date range or clear the filters.",
+    "col": {
+      "date": "Date",
+      "reference": "Reference",
+      "counterparty": "Counterparty",
+      "description": "Description",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "filters": {
+      "label": "Filter transactions",
+      "account": "Account",
+      "status": "Status",
+      "from": "From date",
+      "to": "To date",
+      "min": "Min amount",
+      "max": "Max amount"
+    }
   }
 }

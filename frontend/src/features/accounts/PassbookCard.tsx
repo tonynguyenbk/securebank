@@ -29,7 +29,7 @@ export function PassbookCard({ account, holder, linkTo = true }: { account: Acco
         </div>
         {holder && <p className="mt-0.5 text-[13px] text-ink-2">{holder}</p>}
         <p className="mt-5 text-[12px] text-ink-2">{t('account.available')}</p>
-        <Money value={account.balance} className="text-[28px] leading-tight font-medium tracking-tight sm:text-[32px]" />
+        <Money value={account.balance} className="self-start text-[28px] leading-tight font-medium tracking-tight sm:text-[32px]" />
         {frozen ? (
           <p className="mt-auto pt-3 text-[13px] text-debit">{t('account.frozenNote')}</p>
         ) : (

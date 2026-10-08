@@ -87,16 +87,16 @@ export function LedgerSlip({ data, landStamp = false, showFullNumbers = false }:
       )}
 
       {/* Particulars + stamp */}
-      <div className="relative grid gap-x-6 gap-y-2 px-5 py-4 text-[13px] sm:grid-cols-2 sm:px-6">
+      <div className="relative grid gap-x-6 gap-y-2 px-5 py-4 text-[13px] sm:grid-cols-2 sm:px-6 sm:pb-16">
         <Particular label={t('slip.amount')} value={<Money value={data.amount} className="text-[15px] font-medium" />} />
         <Particular label={t('slip.beneficiary')} value={data.to.name || '—'} />
         <Particular label={t('slip.description')} value={data.description || '—'} />
-        <Particular label={t('slip.time')} value={<span className="figures">{formatDateTimeSeconds(data.completedAt ?? data.createdAt, lang)}</span>} />
+        <Particular label={data.status === 'SUCCESS' ? t('slip.time') : t('slip.processed')} value={<span className="figures">{formatDateTimeSeconds(data.completedAt ?? data.createdAt, lang)}</span>} />
         {data.remainingBalance != null && <Particular label={t('slip.remaining')} value={<Money value={data.remainingBalance} />} />}
         {data.failureCode && <Particular label={t('slip.reason')} value={<span className="text-debit">{t(`errors.${data.failureCode}`, { defaultValue: data.failureCode })}</span>} />}
       </div>
 
-      <div className="pointer-events-none absolute right-5 bottom-14 sm:right-8 sm:bottom-6">
+      <div className="pointer-events-none flex justify-end px-5 pb-4 sm:absolute sm:right-8 sm:bottom-10 sm:p-0">
         <StatusStamp kind={stampFor(data.status)} land={landStamp} date={formatStampDate(data.completedAt ?? data.createdAt)} className="bg-sheet/70" />
       </div>
 

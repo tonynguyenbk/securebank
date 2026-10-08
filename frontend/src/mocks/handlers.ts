@@ -96,6 +96,22 @@ function route(method: 'get' | 'post' | 'put' | 'patch', path: string, access: A
   })
 }
 
+// In-flight bookkeeping: the mock answers after a delay, so overlapping requests really overlap.
+const inFlightKeys = new Set<string>()
+const lockedAccounts = new Set<string>()
+const editing = new Set<string>()
+
+/** Runs `fn` while holding `resource`; an overlapping write to the same resource gets 409 CONCURRENT_UPDATE. */
+async function exclusive<T>(resource: string, fn: () => Promise<T>): Promise<T> {
+  if (editing.has(resource)) throw new MockError('CONCURRENT_UPDATE')
+  editing.add(resource)
+  try {
+    return await fn()
+  } finally {
+    editing.delete(resource)
+  }
+}
+
 async function body(req: Req): Promise<Record<string, unknown>> {
   try {
     const b = await req.request.json()
@@ -326,8 +342,23 @@ export const handlers = [
   route('post', '/transfers', C, async (req) => {
     const b = await body(req)
     const customer = ownCustomer(req)
-    const out = executeTransfer(db, req.ctx, req.user!, b, req.request.headers.get('Idempotency-Key'), (tx) => v.transferResponse(db, tx, customer.id))
-    return json(req, out.body, out.status, out.replayed ? { 'Idempotent-Replayed': 'true' } : {})
+    const key = req.request.headers.get('Idempotency-Key')
+    const scopedKey = `${req.user!.id}:${key}`
+    const src = typeof b.sourceAccountNumber === 'string' ? b.sourceAccountNumber : ''
+    // Same key still running → 409 IN_PROGRESS; another transfer holding the source row → 409 ACCOUNT_BUSY.
+    if (key && inFlightKeys.has(scopedKey)) throw new MockError('IDEMPOTENCY_REQUEST_IN_PROGRESS')
+    const stored = key && db.idempotency.some((r) => r.userId === req.user!.id && r.key === key)
+    if (!stored && src && lockedAccounts.has(src)) throw new MockError('ACCOUNT_BUSY')
+    if (key) inFlightKeys.add(scopedKey)
+    if (src && !stored) lockedAccounts.add(src)
+    try {
+      await delay(450) // the "row lock" is held for the duration of the posting
+      const out = executeTransfer(db, req.ctx, req.user!, b, key, (tx) => v.transferResponse(db, tx, customer.id))
+      return json(req, out.body, out.status, out.replayed ? { 'Idempotent-Replayed': 'true' } : {})
+    } finally {
+      if (key) inFlightKeys.delete(scopedKey)
+      if (src && !stored) lockedAccounts.delete(src)
+    }
   }, true),
 
   route('get', '/transfers', C, (req) => {
@@ -395,13 +426,19 @@ export const handlers = [
   route('patch', '/admin/accounts/:id/freeze', SAD, async (req) => {
     const reason = String((await body(req)).reason ?? '').trim()
     if (reason.length < 3 || reason.length > 255) throw new MockError('VALIDATION_FAILED', [{ field: 'reason', message: 'size must be between 3 and 255' }])
-    return json(req, v.accountAdmin(db, setAccountStatus(db, req.ctx, req.user!, req.params.id, 'FROZEN', reason)))
+    return exclusive(`account:${req.params.id}`, async () => {
+      await delay(300)
+      return json(req, v.accountAdmin(db, setAccountStatus(db, req.ctx, req.user!, req.params.id, 'FROZEN', reason)))
+    })
   }, true),
 
   route('patch', '/admin/accounts/:id/unfreeze', SAD, async (req) => {
     const reason = String((await body(req)).reason ?? '').trim()
     if (reason.length < 3 || reason.length > 255) throw new MockError('VALIDATION_FAILED', [{ field: 'reason', message: 'size must be between 3 and 255' }])
-    return json(req, v.accountAdmin(db, setAccountStatus(db, req.ctx, req.user!, req.params.id, 'ACTIVE', reason)))
+    return exclusive(`account:${req.params.id}`, async () => {
+      await delay(300)
+      return json(req, v.accountAdmin(db, setAccountStatus(db, req.ctx, req.user!, req.params.id, 'ACTIVE', reason)))
+    })
   }, true),
 
   route('get', '/admin/accounts/:id/limits', SAA, (req) => {
@@ -411,8 +448,12 @@ export const handlers = [
   }),
 
   route('put', '/admin/accounts/:id/limits', SAD, async (req) => {
-    const a = updateLimits(db, req.ctx, req.user!, req.params.id, await body(req))
-    return json(req, { accountId: a.id, ...v.accountDetail(db, a, req.ctx.now).limits })
+    const b = await body(req)
+    return exclusive(`account:${req.params.id}`, async () => {
+      await delay(300)
+      const a = updateLimits(db, req.ctx, req.user!, req.params.id, b)
+      return json(req, { accountId: a.id, ...v.accountDetail(db, a, req.ctx.now).limits })
+    })
   }, true),
 
   route('get', '/admin/transactions', SAA, (req) => {
@@ -523,7 +564,13 @@ export const handlers = [
     return json(req, a)
   }),
 
-  route('patch', '/fraud/alerts/:id/review', SAD, async (req) => json(req, reviewAlert(db, req.ctx, req.user!, req.params.id, await body(req))), true),
+  route('patch', '/fraud/alerts/:id/review', SAD, async (req) => {
+    const b = await body(req)
+    return exclusive(`alert:${req.params.id}`, async () => {
+      await delay(300)
+      return json(req, reviewAlert(db, req.ctx, req.user!, req.params.id, b))
+    })
+  }, true),
 
   // Audit
   route('get', '/audit/logs/actions', SAA, (req) => json(req, [...new Set(db.audit.map((l) => l.action))].sort())),
