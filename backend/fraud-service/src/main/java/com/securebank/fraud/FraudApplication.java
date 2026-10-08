@@ -2,8 +2,10 @@ package com.securebank.fraud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
-@SpringBootApplication
+/** JWT-only service: no in-memory user store (and no generated default password). */
+@SpringBootApplication(exclude = UserDetailsServiceAutoConfiguration.class)
 public class FraudApplication {
 
     public static void main(String[] args) {

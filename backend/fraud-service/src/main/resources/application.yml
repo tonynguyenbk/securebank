@@ -48,6 +48,19 @@ securebank:
     revocation-check: true
   outbox:
     enabled: true
+  # Fraud rule thresholds (api.md §4). Rule weights are fixed by the contract.
+  fraud:
+    high-amount-threshold: 100000000
+    high-frequency-max-transfers: 5
+    high-frequency-window: 60s
+    daily-velocity-threshold: 200000000
+    new-beneficiary-min-amount: 10000000
+    alert-min-score: 30
+    business-zone: Asia/Ho_Chi_Minh
+  kafka:
+    consumer:
+      max-attempts: 4
+      initial-backoff: 500ms
 
 management:
   endpoints:
