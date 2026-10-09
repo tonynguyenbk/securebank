@@ -1,26 +1,22 @@
+# syntax=docker/dockerfile:1.7
 # One Dockerfile for every backend module:
 #   docker build -f backend/Dockerfile --build-arg MODULE=banking-core-service backend/
 # Multi-stage: Maven build on a JDK image, run on a slim JRE as a non-root user.
 
 FROM eclipse-temurin:21-jdk AS build
 WORKDIR /src
-
-# Resolve dependencies first so source edits don't invalidate the dependency layer.
-COPY mvnw pom.xml ./
-COPY .mvn .mvn
-COPY common/pom.xml common/
-COPY api-gateway/pom.xml api-gateway/
-COPY identity-service/pom.xml identity-service/
-COPY banking-core-service/pom.xml banking-core-service/
-COPY fraud-service/pom.xml fraud-service/
-COPY audit-service/pom.xml audit-service/
-COPY notification-service/pom.xml notification-service/
-RUN chmod +x mvnw && ./mvnw -B -ntp -q dependency:go-offline -DexcludeReactor=true || true
-
-ARG MODULE
 COPY . .
-RUN chmod +x mvnw && ./mvnw -B -ntp -q -pl ${MODULE} -am package -DskipTests \
-    && cp ${MODULE}/target/${MODULE}.jar /app.jar
+ARG MODULE
+# The Maven repository is a BuildKit cache shared by all module builds, so dependencies download once.
+# Retries make the build tolerant of flaky network transfers.
+RUN --mount=type=cache,target=/root/.m2,sharing=locked \
+    chmod +x mvnw && \
+    for attempt in 1 2 3; do \
+      ./mvnw -B -ntp -q -pl "${MODULE}" -am package -Dmaven.test.skip=true \
+        -Dmaven.wagon.http.retryHandler.count=5 -Daether.connector.http.retryHandler.count=5 && break; \
+      echo "Maven build attempt ${attempt} failed, retrying"; sleep 5; \
+    done && \
+    cp "${MODULE}/target/${MODULE}.jar" /app.jar
 
 FROM eclipse-temurin:21-jre-alpine
 RUN addgroup -S app && adduser -S app -G app

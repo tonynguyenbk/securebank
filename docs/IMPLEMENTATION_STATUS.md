@@ -24,8 +24,8 @@ Last updated: 2026-10-08
 | 8 | Notification service | [x] | — |
 | 9 | Frontend — customer portal | [ ] | Login, dashboard, transfer, receipt |
 | 10 | Frontend — ops portal | [ ] | Fraud queue, accounts, audit |
-| 11 | Dockerization (full compose) | [ ] | `docker compose up --build` works |
-| 12 | Observability | [ ] | Prometheus + Grafana dashboard |
+| 11 | Dockerization (full compose) | [x] | `docker compose up --build` works |
+| 12 | Observability | [x] | Prometheus + Grafana dashboard |
 | 13 | Final docs | [ ] | README, diagrams, Postman |
 
 ---
@@ -135,13 +135,13 @@ Last updated: 2026-10-08
 - [ ] AUDITOR sees no mutation controls (hidden + backend enforced)
 
 ## Phase 11 — Dockerization
-- [ ] Multi-stage Dockerfiles (6 services + frontend nginx)
-- [ ] Full compose with healthchecks + `depends_on: condition: service_healthy`
-- [ ] `scripts/seed-demo-data.sh`, `smoke-test.sh` (runs demo scenario §51), `reset-local-env.sh`
+- [x] Multi-stage Dockerfiles (6 services + frontend nginx)
+- [x] Full compose with healthchecks + `depends_on: condition: service_healthy`
+- [x] `scripts/seed-demo-data.sh`, `smoke-test.sh` (runs demo scenario §51), `reset-local-env.sh`
 
 ## Phase 12 — Observability
-- [ ] Actuator health/info/metrics/prometheus on all services
-- [ ] Prometheus scrape config, Grafana provisioned dashboard
+- [x] Actuator health/info/metrics/prometheus on all services
+- [x] Prometheus scrape config, Grafana provisioned dashboard
 
 ## Phase 13 — Docs
 - [ ] README (23 sections, spec §44) · `architecture.md`, `api-flows.md`, `database-design.md`, `security.md`
@@ -198,6 +198,7 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-09 — Wave 2: full stack `docker compose up` (12 containers healthy), spec §51 demo scenario passes end-to-end (27/27 checks, `scripts/smoke-test.sh`), Prometheus scrapes all 6 services, Grafana dashboard provisioned. E2E job added to CI. Notification params table added to contract after a real-stack mismatch was found.
 - 2026-10-09 — Agent B merged (banking core). Full backend suite after merge: 212 tests, 0 failures. Common: added ACCOUNT_BUSY / CONCURRENT_UPDATE codes, HandlerMethodValidationException → 400, OptimisticLockingFailureException → 409.
 - 2026-10-09 — Agent C merged (fraud, audit, notification): 71 tests green after merge. Follow-ups for lead: map OptimisticLockingFailureException → 409 in common; dedupe copied Kafka consumer config/test helpers into common; poison messages are logged+skipped (no DLT).
 - 2026-10-09 — Agent A merged (identity + gateway): 68 tests green after merge (common 9, identity 43, gateway 16). Notes: BCrypt >72-byte passwords pre-hashed with SHA-256; gateway trusts only private-range proxies for X-Forwarded-For; gateway actuator route endpoint not exposed.

@@ -295,6 +295,16 @@ type Notification = {
 | `PATCH /notifications/{id}/read` | owner | → **204** · 404 `NOTIFICATION_NOT_FOUND` (also when not owner) |
 
 The frontend renders `templateCode` + `params` through i18n (EN/VI); `subject`/`message` are the English fallback.
+
+Exact `params` per template (account numbers are always masked `******0002`; null values are omitted):
+
+| templateCode | params |
+|---|---|
+| `TRANSFER_SENT` | `amount, currency, reference, accountNumber, counterpartyName, counterpartyAccountNumber, balanceAfter` |
+| `TRANSFER_RECEIVED` | `amount, currency, reference, accountNumber, counterpartyName, counterpartyAccountNumber, balanceAfter` |
+| `TRANSFER_REJECTED` | `amount, currency, reference, accountNumber, counterpartyAccountNumber, failureCode` (an `ErrorCode` name — render via the error map; **no counterpartyName**) |
+| `ACCOUNT_FROZEN`, `ACCOUNT_UNFROZEN` | `accountNumber, status` |
+| `WELCOME` | `fullName, username` |
 Created on: `TransactionCompleted` (sender: TRANSFER_SENT IN_APP + EMAIL; recipient: TRANSFER_RECEIVED IN_APP + SMS),
 `TransactionFailed` (sender: TRANSFER_REJECTED IN_APP), `AccountStatusChanged` (owner: ACCOUNT_FROZEN/UNFROZEN IN_APP + EMAIL),
 `UserRegistered` (WELCOME IN_APP). Fraud alerts are **not** notified to customers (no tipping-off).
