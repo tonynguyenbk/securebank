@@ -147,7 +147,7 @@ export function TransferPage() {
             <div className="space-y-5 px-5 py-6 sm:px-7">
               <Field label={t('transfer.source')} error={msg(errors.source)}>
                 {(s) => (
-                  <Select {...s} id="transfer-source" value={sourceId} onChange={(e) => set('sourceId', 'source')(e.target.value)} className="figures">
+                  <Select {...s} value={sourceId} onChange={(e) => set('sourceId', 'source')(e.target.value)} className="figures">
                     {usable.map((a) => (
                       <option key={a.id} value={a.id}>
                         {a.accountNumber} · {t(`accountStatus.${a.status}`)}
@@ -166,7 +166,6 @@ export function TransferPage() {
                 {(s) => (
                   <Input
                     {...s}
-                    id="transfer-destination"
                     inputMode="numeric"
                     autoComplete="off"
                     maxLength={10}
@@ -189,14 +188,13 @@ export function TransferPage() {
                   ) : undefined
                 }
               >
-                {(s) => <AmountInput {...s} id="transfer-amount" value={values.amount} onValueChange={set('amount', 'amount')} placeholder="0" />}
+                {(s) => <AmountInput {...s} value={values.amount} onValueChange={set('amount', 'amount')} placeholder="0" />}
               </Field>
 
               <Field label={t('transfer.description')} optional={`${values.description.length}/${DESCRIPTION_MAX}`} error={msg(errors.description)}>
                 {(s) => (
                   <Textarea
                     {...s}
-                    id="transfer-description"
                     rows={2}
                     value={values.description}
                     placeholder={t('transfer.descriptionPh')}
