@@ -22,8 +22,8 @@ Last updated: 2026-10-08
 | 6 | Fraud service | [x] | — |
 | 7 | Audit service | [x] | — |
 | 8 | Notification service | [x] | — |
-| 9 | Frontend — customer portal | [ ] | Login, dashboard, transfer, receipt |
-| 10 | Frontend — ops portal | [ ] | Fraud queue, accounts, audit |
+| 9 | Frontend — customer portal | [x] | Login, dashboard, transfer, receipt |
+| 10 | Frontend — ops portal | [x] | Fraud queue, accounts, audit |
 | 11 | Dockerization (full compose) | [x] | `docker compose up --build` works |
 | 12 | Observability | [x] | Prometheus + Grafana dashboard |
 | 13 | Final docs | [ ] | README, diagrams, Postman |
@@ -118,21 +118,21 @@ Last updated: 2026-10-08
 - [x] `GET /notifications/me`; idempotent by event ID
 
 ## Phase 9 — Frontend: customer portal
-- [ ] Design tokens, fonts, base components (DESIGN_SYSTEM §7)
-- [ ] Auth flow (login, register, refresh interceptor, role-aware routing)
-- [ ] `/dashboard`, `/accounts`, `/accounts/:id`
-- [ ] `/transfer`: form → review dialog → submit with Idempotency-Key (kept on retry) → **LedgerSlip receipt**
-- [ ] `/transactions` (filters, pagination), `/transactions/:id`, `/notifications`, `/profile`
-- [ ] Error-code → message map; loading / empty / error states
-- [ ] Playwright screenshots at 375 / 1024 / 1440 + self-critique pass
+- [x] Design tokens, fonts, base components (DESIGN_SYSTEM §7)
+- [x] Auth flow (login, register, refresh interceptor, role-aware routing)
+- [x] `/dashboard`, `/accounts`, `/accounts/:id`
+- [x] `/transfer`: form → review dialog → submit with Idempotency-Key (kept on retry) → **LedgerSlip receipt**
+- [x] `/transactions` (filters, pagination), `/transactions/:id`, `/notifications`, `/profile`
+- [x] Error-code → message map; loading / empty / error states
+- [x] Playwright screenshots at 375 / 1024 / 1440 + self-critique pass
 
 ## Phase 10 — Frontend: ops portal
-- [ ] OpsShell, `/ops/dashboard` (6 KPI cards from real APIs)
-- [ ] `/ops/customers`, `/ops/accounts` (freeze/unfreeze, limits editor)
-- [ ] `/ops/transactions` (+ ledger + reconciliation view for AUDITOR)
-- [ ] `/ops/fraud`, `/ops/fraud/:id` (rules, timeline, review, freeze)
-- [ ] `/ops/audit`
-- [ ] AUDITOR sees no mutation controls (hidden + backend enforced)
+- [x] OpsShell, `/ops/dashboard` (6 KPI cards from real APIs)
+- [x] `/ops/customers`, `/ops/accounts` (freeze/unfreeze, limits editor)
+- [x] `/ops/transactions` (+ ledger + reconciliation view for AUDITOR)
+- [x] `/ops/fraud`, `/ops/fraud/:id` (rules, timeline, review, freeze)
+- [x] `/ops/audit`
+- [x] AUDITOR sees no mutation controls (hidden + backend enforced)
 
 ## Phase 11 — Dockerization
 - [x] Multi-stage Dockerfiles (6 services + frontend nginx)
@@ -198,6 +198,7 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-09 — Agent D finished (5 milestones deployed): both portals, EN/VI, light/dark, MSW mock mode with the real transfer rules. Lead review found and fixed a label/input association bug on the transfer form. Worktrees removed; all Wave 1 work is on main. Known gap: no automated frontend tests.
 - 2026-10-09 — Wave 2: full stack `docker compose up` (12 containers healthy), spec §51 demo scenario passes end-to-end (27/27 checks, `scripts/smoke-test.sh`), Prometheus scrapes all 6 services, Grafana dashboard provisioned. E2E job added to CI. Notification params table added to contract after a real-stack mismatch was found.
 - 2026-10-09 — Agent B merged (banking core). Full backend suite after merge: 212 tests, 0 failures. Common: added ACCOUNT_BUSY / CONCURRENT_UPDATE codes, HandlerMethodValidationException → 400, OptimisticLockingFailureException → 409.
 - 2026-10-09 — Agent C merged (fraud, audit, notification): 71 tests green after merge. Follow-ups for lead: map OptimisticLockingFailureException → 409 in common; dedupe copied Kafka consumer config/test helpers into common; poison messages are logged+skipped (no DLT).
