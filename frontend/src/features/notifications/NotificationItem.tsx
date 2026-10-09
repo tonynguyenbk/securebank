@@ -22,7 +22,6 @@ export function NotificationItem({ n, onMarkRead, marking, compact }: Props) {
         <p className={`text-[13px] text-ink-2 ${compact ? 'line-clamp-2' : ''}`}>{body}</p>
         <p className="figures mt-1 flex flex-wrap gap-x-3 text-[11px] text-ink-2">
           <span>{formatDateTime(n.createdAt, i18n.language)}</span>
-          {!compact && <span>{t(`notifications.channel.${n.channel}`)}</span>}
           {n.relatedTransactionId && (
             <Link to={`/transactions/${n.relatedTransactionId}`} className="text-vault underline-offset-4 hover:underline">
               {t('notifications.viewTransaction')}

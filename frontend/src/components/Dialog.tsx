@@ -39,10 +39,16 @@ export function Dialog({ open, onClose, title, description, children, footer, si
     }
   }, [open])
 
+  // Unmounting while open (parent drops the dialog) must also hand focus back to the opener.
   useEffect(() => {
     const el = ref.current
+    const openerRef = opener
     return () => {
-      if (el?.open) el.close()
+      if (el?.open) {
+        el.close()
+        const target = openerRef.current
+        if (target instanceof HTMLElement) requestAnimationFrame(() => target.focus())
+      }
     }
   }, [])
 
