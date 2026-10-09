@@ -26,7 +26,7 @@ Last updated: 2026-10-08
 | 10 | Frontend — ops portal | [x] | Fraud queue, accounts, audit |
 | 11 | Dockerization (full compose) | [x] | `docker compose up --build` works |
 | 12 | Observability | [x] | Prometheus + Grafana dashboard |
-| 13 | Final docs | [ ] | README, diagrams, Postman |
+| 13 | Final docs | [x] | README, diagrams, Postman |
 
 ---
 
@@ -144,10 +144,10 @@ Last updated: 2026-10-08
 - [x] Prometheus scrape config, Grafana provisioned dashboard
 
 ## Phase 13 — Docs
-- [ ] README (23 sections, spec §44) · `architecture.md`, `api-flows.md`, `database-design.md`, `security.md`
-- [ ] Mermaid: architecture, transfer sequence, outbox flow, ER
-- [ ] `docs/api/SecureBank.postman_collection.json` + environment
-- [ ] Screenshots in `docs/screenshots/`
+- [x] README (23 sections, spec §44) · `architecture.md`, `api-flows.md`, `database-design.md`, `security.md`
+- [x] Mermaid: architecture, transfer sequence, outbox flow, ER
+- [x] `docs/api/SecureBank.postman_collection.json` + environment
+- [x] Screenshots in `docs/screenshots/`
 
 ---
 
@@ -198,6 +198,7 @@ The full stack (6 JVM services + Postgres + Kafka + Redis) needs ~3–4 GB RAM, 
 ---
 
 ## Change log
+- 2026-10-09 — Phase 13: README (23 sections, Mermaid architecture/sequence/outbox/ER), architecture.md, api-flows.md, database-design.md, security.md, Postman collection (41 requests, verified with newman against the running stack: 13/13 assertions), screenshots. All 14 phases complete.
 - 2026-10-09 — Agent D finished (5 milestones deployed): both portals, EN/VI, light/dark, MSW mock mode with the real transfer rules. Lead review found and fixed a label/input association bug on the transfer form. Worktrees removed; all Wave 1 work is on main. Known gap: no automated frontend tests.
 - 2026-10-09 — Wave 2: full stack `docker compose up` (12 containers healthy), spec §51 demo scenario passes end-to-end (27/27 checks, `scripts/smoke-test.sh`), Prometheus scrapes all 6 services, Grafana dashboard provisioned. E2E job added to CI. Notification params table added to contract after a real-stack mismatch was found.
 - 2026-10-09 — Agent B merged (banking core). Full backend suite after merge: 212 tests, 0 failures. Common: added ACCOUNT_BUSY / CONCURRENT_UPDATE codes, HandlerMethodValidationException → 400, OptimisticLockingFailureException → 409.
