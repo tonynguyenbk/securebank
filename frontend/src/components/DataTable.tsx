@@ -30,6 +30,8 @@ type Props<T> = {
   onRetry?: () => void
   empty?: ReactNode
   rowHref?: (row: T) => string
+  /** Alternative to rowHref (e.g. open a dialog). Cells must still contain a focusable control for keyboard users. */
+  onRowClick?: (row: T) => void
   rowClassName?: (row: T) => string
   sort?: Sort
   onSortChange?: (s: Sort) => void
@@ -40,16 +42,17 @@ type Props<T> = {
  * Ledger-style table: heavy ink rule under the header, hairline rules between rows, right-aligned figures.
  * Below 768 px rows become stacked cards so nothing scrolls sideways.
  */
-export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, onRetry, empty, rowHref, rowClassName, sort, onSortChange, dense }: Props<T>) {
+export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, onRetry, empty, rowHref, onRowClick, rowClassName, sort, onSortChange, dense }: Props<T>) {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
   if (error && !rows) return <ErrorState error={error} onRetry={onRetry} />
 
   const go = (row: T) => (e: MouseEvent) => {
-    if (!rowHref) return
+    if (!rowHref && !onRowClick) return
     if ((e.target as HTMLElement).closest('a,button,input,select,label')) return
-    navigate(rowHref(row))
+    if (onRowClick) onRowClick(row)
+    else if (rowHref) navigate(rowHref(row))
   }
   const pad = dense ? 'py-2' : 'py-3'
 
@@ -107,7 +110,7 @@ export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, o
             <tr
               key={rowKey(row)}
               onClick={go(row)}
-              className={`border-b border-rule transition-colors duration-150 ${rowHref ? 'cursor-pointer hover:bg-vault-tint/60' : ''} ${rowClassName?.(row) ?? ''}`}
+              className={`border-b border-rule transition-colors duration-150 ${rowHref || onRowClick ? 'cursor-pointer hover:bg-vault-tint/60' : ''} ${rowClassName?.(row) ?? ''}`}
             >
               {tableColumns.map((c) => (
                 <td key={c.key} className={`${pad} pr-4 align-middle last:pr-0 ${c.align === 'right' ? 'text-right' : ''} ${c.className ?? ''}`}>
@@ -133,7 +136,7 @@ export function DataTable<T>({ columns, rows, rowKey, caption, loading, error, o
           const end = columns.filter((c) => c.mobile === 'end')
           const fields = columns.filter((c) => !c.mobile || c.mobile === 'field')
           return (
-            <li key={rowKey(row)} onClick={go(row)} className={`border-b border-rule py-3.5 ${rowHref ? 'cursor-pointer' : ''} ${rowClassName?.(row) ?? ''}`}>
+            <li key={rowKey(row)} onClick={go(row)} className={`border-b border-rule py-3.5 ${rowHref || onRowClick ? 'cursor-pointer' : ''} ${rowClassName?.(row) ?? ''}`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 space-y-0.5">{title.map((c) => <div key={c.key}>{c.cell(row)}</div>)}</div>
                 <div className="shrink-0 space-y-0.5 text-right">{end.map((c) => <div key={c.key}>{c.cell(row)}</div>)}</div>

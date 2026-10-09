@@ -67,3 +67,10 @@ export function normalizeError(err: unknown): ApiError {
   }
   return new ApiError({ status: 0, code: 'UNKNOWN_ERROR', message: err instanceof Error ? err.message : String(err) })
 }
+
+// Every query/mutation error is normalised by the axios interceptor, so tell react-query about it.
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: ApiError
+  }
+}

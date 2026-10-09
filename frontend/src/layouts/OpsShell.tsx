@@ -58,12 +58,14 @@ export function OpsShell() {
       </header>
 
       {/* ≥ 1024 px: fixed sidebar */}
-      <aside className="no-print sticky top-0 hidden h-dvh flex-col bg-console px-3 py-5 text-on-console lg:flex">
-        <div className="px-3 pb-6">
-          <Wordmark tone="console" sub={t('ops.portal')} />
-        </div>
-        <SidebarBody />
-      </aside>
+      <div className="no-print hidden border-r border-console-rule bg-console lg:block">
+        <aside className="sticky top-0 flex h-dvh flex-col overflow-y-auto px-3 py-5 text-on-console">
+          <div className="px-3 pb-6">
+            <Wordmark tone="console" sub={t('ops.portal')} />
+          </div>
+          <SidebarBody />
+        </aside>
+      </div>
 
       <main id="main" className="min-w-0 px-4 pt-7 pb-16 sm:px-8 lg:px-10 lg:pt-9">
         <div className="mx-auto max-w-[1280px]">

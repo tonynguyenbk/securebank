@@ -54,9 +54,9 @@ export function FilterBar({ defs, values, onApply, label }: Props) {
         {active && <span className="figures ml-auto text-[12px] text-vault">{activeCount}</span>}
       </button>
       <div className={`${open ? 'mt-3 block' : 'hidden'} sm:mt-0 sm:block`}>
-      <div className="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         {defs.map((d) => (
-          <Field key={d.name} label={<span className="text-[12px] text-ink-2">{d.label}</span>}>
+          <Field key={d.name} className={d.type === 'text' ? 'sm:w-56' : d.type === 'select' ? 'sm:w-44' : 'sm:w-40'} label={<span className="text-[12px] text-ink-2">{d.label}</span>}>
             {(s) => {
               const common = { ...s, value: draft[d.name] ?? '' }
               if (d.type === 'select')
@@ -84,8 +84,7 @@ export function FilterBar({ defs, values, onApply, label }: Props) {
             }}
           </Field>
         ))}
-      </div>
-      <div className="mt-4 flex flex-wrap items-center justify-end gap-2">
+      <div className="flex flex-wrap items-center gap-2 sm:pb-0.5">
         {active && (
           <Button
             variant="ghost"
@@ -99,9 +98,10 @@ export function FilterBar({ defs, values, onApply, label }: Props) {
             {t('common.reset')}
           </Button>
         )}
-        <Button type="submit" size="sm">
+        <Button type="submit" size="sm" className="h-10">
           {t('common.apply')}
         </Button>
+      </div>
       </div>
       </div>
     </form>

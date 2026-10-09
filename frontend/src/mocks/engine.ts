@@ -70,22 +70,26 @@ export function audit(db: DB, ctx: Ctx, input: AuditInput) {
   })
 }
 
+/** Masked as the notification service sends it: "******0002". */
+const masked = (n: string) => `******${n.slice(-4)}`
+
+// English subject/message, as the notification service renders them. Params follow contract section 6.
 const ENGLISH: Record<NotificationTemplate, (p: Record<string, string | number>) => [string, string]> = {
   TRANSFER_SENT: (p) => [
     `You sent ${formatVnd(Number(p.amount))}`,
-    `${formatVnd(Number(p.amount))} was sent to ${p.counterpartyName} (ref ${p.reference}). Balance: ${formatVnd(Number(p.balanceAfter))}.`,
+    `${formatVnd(Number(p.amount))} was sent to ${p.counterpartyName} (${p.counterpartyAccountNumber}), ref ${p.reference}. Balance: ${formatVnd(Number(p.balanceAfter))}.`,
   ],
   TRANSFER_RECEIVED: (p) => [
     `You received ${formatVnd(Number(p.amount))}`,
-    `${p.counterpartyName} sent you ${formatVnd(Number(p.amount))} (ref ${p.reference}). Balance: ${formatVnd(Number(p.balanceAfter))}.`,
+    `${p.counterpartyName} (${p.counterpartyAccountNumber}) sent you ${formatVnd(Number(p.amount))}, ref ${p.reference}. Balance: ${formatVnd(Number(p.balanceAfter))}.`,
   ],
   TRANSFER_REJECTED: (p) => [
     'Transfer not completed',
-    `Your transfer of ${formatVnd(Number(p.amount))} (ref ${p.reference}) was rejected: ${p.reasonCode}.`,
+    `Your transfer of ${formatVnd(Number(p.amount))} to ${p.counterpartyAccountNumber} (ref ${p.reference}) was rejected: ${p.failureCode}.`,
   ],
   ACCOUNT_FROZEN: (p) => ['Account frozen', `Account ${p.accountNumber} has been frozen. Outgoing transfers are blocked.`],
   ACCOUNT_UNFROZEN: (p) => ['Account active again', `Account ${p.accountNumber} is active again.`],
-  WELCOME: (p) => ['Welcome to SecureBank', `Your current account ${p.accountNumber} is open.`],
+  WELCOME: (p) => ['Welcome to SecureBank', `Hello ${p.fullName}, your current account is open.`],
 }
 
 export function notify(
@@ -180,7 +184,8 @@ export function setAccountStatus(db: DB, ctx: Ctx, actor: MUser, accountId: stri
   const owner = findCustomer(db, a.customerId)
   if (owner) {
     notify(db, ctx, owner.userId, ['IN_APP', 'EMAIL'], target === 'FROZEN' ? 'ACCOUNT_FROZEN' : 'ACCOUNT_UNFROZEN', {
-      accountNumber: a.accountNumber,
+      accountNumber: masked(a.accountNumber),
+      status: a.status,
     })
   }
   return a
@@ -333,9 +338,9 @@ export function executeTransfer(
       amount,
       currency: 'VND',
       reference: tx.reference,
-      counterpartyName: customerNameOfAccount(db, dest),
-      accountNumber: src,
-      reasonCode: rejection,
+      accountNumber: masked(src),
+      counterpartyAccountNumber: masked(dst),
+      failureCode: rejection,
     }, tx.id)
     const errBody = errorBody(rejection, '/api/v1/transfers', ctx)
     db.idempotency.push({ userId: user.id, key: idempotencyKey, hash, status: 422, body: errBody })
@@ -368,11 +373,11 @@ export function executeTransfer(
   })
   const destCustomer = findCustomer(db, dest.customerId)
   notify(db, ctx, user.id, ['IN_APP', 'EMAIL'], 'TRANSFER_SENT', {
-    amount, currency: 'VND', reference: tx.reference, counterpartyName: destCustomer?.fullName ?? '', accountNumber: src, balanceAfter: source.balance,
+    amount, currency: 'VND', reference: tx.reference, accountNumber: masked(src), counterpartyName: destCustomer?.fullName ?? '', counterpartyAccountNumber: masked(dst), balanceAfter: source.balance,
   }, tx.id)
   if (destCustomer) {
     notify(db, ctx, destCustomer.userId, ['IN_APP', 'SMS'], 'TRANSFER_RECEIVED', {
-      amount, currency: 'VND', reference: tx.reference, counterpartyName: customer.fullName, accountNumber: dst, balanceAfter: dest.balance,
+      amount, currency: 'VND', reference: tx.reference, accountNumber: masked(dst), counterpartyName: customer.fullName, counterpartyAccountNumber: masked(src), balanceAfter: dest.balance,
     }, tx.id)
   }
   evaluateFraud(db, { ...ctx, now: plus(ctx.now, 900) }, tx)

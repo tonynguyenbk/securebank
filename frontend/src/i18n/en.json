@@ -231,29 +231,38 @@
     "noNotices": "You're up to date."
   },
   "notification": {
+    "part": {
+      "ref": "Ref {{reference}}.",
+      "balance": "Balance {{balance}}."
+    },
     "TRANSFER_SENT": {
       "title": "You sent {{amount}}",
-      "body": "{{amount}} to {{counterpartyName}}, ref {{reference}}. Balance {{balanceAfter}}."
+      "to": "To {{party}}."
     },
     "TRANSFER_RECEIVED": {
       "title": "You received {{amount}}",
-      "body": "From {{counterpartyName}}, ref {{reference}}. Balance {{balanceAfter}}."
+      "from": "From {{party}}."
     },
     "TRANSFER_REJECTED": {
       "title": "Transfer not sent",
-      "body": "{{amount}} to {{counterpartyName}} (ref {{reference}}) was rejected. {{reason}}"
+      "body": "Your transfer of {{amount}} was rejected.",
+      "bodyTo": "Your transfer of {{amount}} to {{party}} was rejected."
     },
     "ACCOUNT_FROZEN": {
       "title": "Account frozen",
-      "body": "Account {{accountNumber}} is frozen. Outgoing transfers are blocked — contact the branch."
+      "body": "Account {{accountNumber}} is frozen. Outgoing transfers are blocked — contact the branch.",
+      "bodyNoNumber": "Your account is frozen. Outgoing transfers are blocked — contact the branch."
     },
     "ACCOUNT_UNFROZEN": {
       "title": "Account active again",
-      "body": "Account {{accountNumber}} is active again. You can send money as usual."
+      "body": "Account {{accountNumber}} is active again. You can send money as usual.",
+      "bodyNoNumber": "Your account is active again. You can send money as usual."
     },
     "WELCOME": {
       "title": "Welcome to SecureBank",
-      "body": "Your current account {{accountNumber}} is open."
+      "titleNamed": "Welcome to SecureBank, {{fullName}}",
+      "body": "You're registered as {{username}}. Your VND current account is open.",
+      "bodyNoUser": "Your VND current account is open."
     }
   },
   "notifications": {
@@ -291,6 +300,108 @@
       "transactions": "Transactions",
       "audit": "Audit log",
       "openAlerts": "{{count}} alerts need a decision"
+    },
+    "readOnly": "Read-only access: your role can inspect but not change this record.",
+    "dashboard": {
+      "title": "Today at the bank",
+      "subtitle": "What needs a human decision right now, and how money moved today.",
+      "kpis": "Today's figures",
+      "volume": "Posted volume",
+      "count": "Transfers",
+      "chartTitle": "Posted volume, last 14 days",
+      "chartNote": "Successful transfers only",
+      "queue": "Needs a decision",
+      "openQueue": "Fraud queue",
+      "queueEmpty": "No open alerts.",
+      "queueEmptyBody": "New alerts appear here as soon as the fraud rules flag a transfer.",
+      "underReview": "{{count}} more under review"
+    },
+    "kpi": {
+      "transactions": "Transactions today",
+      "successful": "Posted",
+      "failed": "Failed or rejected",
+      "fraud": "Fraud alerts to handle",
+      "fraudNote": "{{open}} open · {{critical}} critical",
+      "frozen": "Frozen accounts",
+      "volume": "Transferred today"
+    },
+    "accounts": {
+      "title": "Accounts",
+      "subtitle": "Search by account number or customer name. Freezing blocks outgoing transfers only.",
+      "filter": "Filter accounts",
+      "search": "Account number or name",
+      "searchPh": "1000000001 or Nguyễn",
+      "empty": "Try another number or name.",
+      "actions": "Actions",
+      "back": "Back to accounts",
+      "account": "Account",
+      "overview": "Account",
+      "id": "Account ID",
+      "transactions": "Transactions on this account"
+    },
+    "freeze": {
+      "action": "Freeze",
+      "unfreezeAction": "Unfreeze",
+      "title": "Freeze account",
+      "unfreezeTitle": "Unfreeze account",
+      "body": "Outgoing transfers will be rejected until the account is unfrozen. Incoming transfers still arrive. The owner is notified.",
+      "unfreezeBody": "The owner can send money again. The owner is notified.",
+      "reason": "Reason",
+      "reasonHint": "Required, 3–255 characters. Recorded in the audit log.",
+      "reasonRule": "Give a reason of 3–255 characters.",
+      "confirm": "Freeze account",
+      "unfreezeConfirm": "Unfreeze account",
+      "frozen": "Account {{number}} is frozen.",
+      "unfrozen": "Account {{number}} is active again."
+    },
+    "limits": {
+      "title": "Transfer limits",
+      "per": "Per transfer",
+      "daily": "Per day",
+      "save": "Save limits",
+      "saved": "Limits updated.",
+      "positive": "Must be greater than 0.",
+      "perAboveDaily": "The per-transfer limit can't be higher than the daily limit.",
+      "serverRule": "Rejected by the server's limit rules.",
+      "audited": "Changes are recorded in the audit log with the old and new values."
+    },
+    "customers": {
+      "title": "Customers",
+      "subtitle": "Search by name, email or phone.",
+      "search": "Name, email or phone",
+      "searchPh": "Trần, @demo, 0912…",
+      "empty": "Try a shorter part of the name, email or phone.",
+      "name": "Customer",
+      "accounts": "Accounts",
+      "alerts": "Fraud alerts",
+      "noAlerts": "No fraud alerts for this customer.",
+      "userId": "User ID",
+      "back": "Back to customers"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "subtitle": "Every transfer in the bank, including rejected attempts.",
+      "back": "Back to transactions",
+      "one": "Transaction",
+      "createdBy": "Created by",
+      "id": "Transaction ID"
+    },
+    "ledger": {
+      "title": "Ledger entries",
+      "type": "Entry",
+      "before": "Balance before",
+      "after": "Balance after",
+      "id": "Entry ID"
+    },
+    "recon": {
+      "title": "Reconciliation",
+      "explain": "Re-reads this transaction's ledger lines and checks that debits equal credits and the entry count matches the status.",
+      "run": "Run reconciliation check",
+      "again": "Check again",
+      "balanced": "Balanced: debits equal credits",
+      "unbalanced": "Not balanced: investigate this transaction",
+      "entries": "Entries (found / expected)",
+      "checkedAt": "Checked {{time}}"
     }
   },
   "errors": {
@@ -473,5 +584,111 @@
     "preferences": "Display",
     "theme": "Theme",
     "prefsNote": "Amounts always use Vietnamese grouping (25.000.000 ₫); times are shown in Vietnam time (UTC+7)."
+  },
+  "fraud": {
+    "title": "Fraud queue",
+    "subtitle": "Alerts raised by the rules engine. Highest risk first is one click away.",
+    "headOpen": "{{count}} open",
+    "headReview": "{{count}} under review",
+    "headCritical": "{{count}} critical",
+    "filters": {
+      "label": "Filter alerts",
+      "status": "Status",
+      "level": "Risk level"
+    },
+    "col": {
+      "risk": "Risk",
+      "transaction": "Transaction",
+      "customer": "Customer",
+      "amount": "Amount",
+      "status": "Status",
+      "created": "Raised"
+    },
+    "empty": "No alerts match.",
+    "emptyBody": "Clear the filters to see every alert.",
+    "back": "Back to fraud queue",
+    "alert": "Fraud alert",
+    "raised": "Raised {{time}}",
+    "rules": "Triggered rules",
+    "rule": "Rule",
+    "score": "Score",
+    "total": "Risk score",
+    "scale": "Scale: 0–29 low · 30–59 medium · 60–79 high · 80+ critical. An alert is raised from 30.",
+    "ruleName": {
+      "HIGH_AMOUNT": "High amount",
+      "HIGH_FREQUENCY": "High frequency",
+      "DAILY_VELOCITY": "Daily velocity",
+      "NEW_BENEFICIARY": "New beneficiary"
+    },
+    "ruleDesc": {
+      "HIGH_AMOUNT": "Amount of 100.000.000 ₫ or more.",
+      "HIGH_FREQUENCY": "More than 5 outgoing transfers from this customer within 60 seconds.",
+      "DAILY_VELOCITY": "Customer's outgoing total today is above 200.000.000 ₫.",
+      "NEW_BENEFICIARY": "First transfer to this account, for 10.000.000 ₫ or more."
+    },
+    "transaction": "Transaction",
+    "from": "From",
+    "to": "To",
+    "occurred": "Occurred",
+    "timeline": "Timeline",
+    "system": "System",
+    "customer": "Customer and account",
+    "freeze": "Freeze account",
+    "freezeReason": "Fraud alert {{ref}}",
+    "review": {
+      "title": "Review",
+      "decision": "Decision",
+      "option": {
+        "UNDER_REVIEW": "Take under review",
+        "APPROVED": "Approve as legitimate",
+        "REJECTED": "Confirm fraud",
+        "CLOSED": "Close"
+      },
+      "hint": {
+        "UNDER_REVIEW": "You're looking into it; no note needed.",
+        "APPROVED": "The customer confirmed the transfer.",
+        "REJECTED": "Fraud confirmed. Consider freezing the account.",
+        "CLOSED": "No further action."
+      },
+      "note": "Note",
+      "notePh": "What did you check, and with whom?",
+      "required": "Required",
+      "pick": "Choose a decision.",
+      "noteRequired": "A note is required for this decision.",
+      "submit": "Record decision",
+      "saved": "Alert moved to “{{status}}”.",
+      "terminal": "This alert is closed. No further decisions are possible."
+    }
+  },
+  "audit": {
+    "title": "Audit log",
+    "subtitle": "Append-only record of every security and financial event, from all services.",
+    "subtitleStaff": "Account, transaction and fraud events. User sign-in records and IP addresses are visible to auditors only.",
+    "filter": "Filter audit log",
+    "empty": "Widen the date range or clear the filters.",
+    "record": "Audit record",
+    "col": {
+      "time": "Time",
+      "action": "Action",
+      "actor": "Actor",
+      "resource": "Resource",
+      "outcome": "Outcome"
+    },
+    "outcome": {
+      "SUCCESS": "Success",
+      "FAILURE": "Failure"
+    },
+    "filterByCorrelation": "Show every event of this request",
+    "service": "Source service",
+    "ip": "IP address",
+    "eventId": "Event ID",
+    "received": "Received",
+    "diff": "Changes",
+    "field": "Field",
+    "before": "Before",
+    "after": "After",
+    "changed": "changed",
+    "noChanges": "This event carries no before/after data.",
+    "appendOnly": "Audit records can't be edited or deleted."
   }
 }

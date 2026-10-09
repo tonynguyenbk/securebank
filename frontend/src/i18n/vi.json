@@ -231,29 +231,38 @@
     "noNotices": "Bạn đã đọc hết thông báo."
   },
   "notification": {
+    "part": {
+      "ref": "Mã {{reference}}.",
+      "balance": "Số dư {{balance}}."
+    },
     "TRANSFER_SENT": {
       "title": "Đã chuyển {{amount}}",
-      "body": "{{amount}} đến {{counterpartyName}}, mã {{reference}}. Số dư {{balanceAfter}}."
+      "to": "Đến {{party}}."
     },
     "TRANSFER_RECEIVED": {
       "title": "Bạn nhận được {{amount}}",
-      "body": "Từ {{counterpartyName}}, mã {{reference}}. Số dư {{balanceAfter}}."
+      "from": "Từ {{party}}."
     },
     "TRANSFER_REJECTED": {
       "title": "Giao dịch không thực hiện được",
-      "body": "Lệnh chuyển {{amount}} đến {{counterpartyName}} (mã {{reference}}) bị từ chối. {{reason}}"
+      "body": "Lệnh chuyển {{amount}} của bạn bị từ chối.",
+      "bodyTo": "Lệnh chuyển {{amount}} đến {{party}} bị từ chối."
     },
     "ACCOUNT_FROZEN": {
       "title": "Tài khoản bị phong toả",
-      "body": "Tài khoản {{accountNumber}} đã bị phong toả. Mọi lệnh chuyển tiền đi bị chặn — vui lòng liên hệ chi nhánh."
+      "body": "Tài khoản {{accountNumber}} đã bị phong toả. Mọi lệnh chuyển tiền đi bị chặn — vui lòng liên hệ chi nhánh.",
+      "bodyNoNumber": "Tài khoản của bạn đã bị phong toả. Mọi lệnh chuyển tiền đi bị chặn — vui lòng liên hệ chi nhánh."
     },
     "ACCOUNT_UNFROZEN": {
       "title": "Tài khoản hoạt động trở lại",
-      "body": "Tài khoản {{accountNumber}} đã được gỡ phong toả. Bạn có thể chuyển tiền như bình thường."
+      "body": "Tài khoản {{accountNumber}} đã được gỡ phong toả. Bạn có thể chuyển tiền như bình thường.",
+      "bodyNoNumber": "Tài khoản của bạn đã được gỡ phong toả. Bạn có thể chuyển tiền như bình thường."
     },
     "WELCOME": {
       "title": "Chào mừng đến với SecureBank",
-      "body": "Tài khoản thanh toán {{accountNumber}} của bạn đã được mở."
+      "titleNamed": "Chào mừng {{fullName}} đến với SecureBank",
+      "body": "Bạn đã đăng ký với tên đăng nhập {{username}}. Tài khoản thanh toán VND của bạn đã được mở.",
+      "bodyNoUser": "Tài khoản thanh toán VND của bạn đã được mở."
     }
   },
   "notifications": {
@@ -291,6 +300,108 @@
       "transactions": "Giao dịch",
       "audit": "Nhật ký kiểm toán",
       "openAlerts": "{{count}} cảnh báo cần xử lý"
+    },
+    "readOnly": "Chỉ được xem: vai trò của bạn không được thay đổi bản ghi này.",
+    "dashboard": {
+      "title": "Hoạt động hôm nay",
+      "subtitle": "Những việc cần quyết định ngay, và dòng tiền trong ngày.",
+      "kpis": "Số liệu hôm nay",
+      "volume": "Giá trị ghi sổ",
+      "count": "Số giao dịch",
+      "chartTitle": "Giá trị ghi sổ 14 ngày gần nhất",
+      "chartNote": "Chỉ tính giao dịch thành công",
+      "queue": "Cần quyết định",
+      "openQueue": "Danh sách cảnh báo",
+      "queueEmpty": "Không có cảnh báo mới.",
+      "queueEmptyBody": "Cảnh báo mới sẽ hiện ở đây ngay khi bộ quy tắc gắn cờ một giao dịch.",
+      "underReview": "Còn {{count}} cảnh báo đang xem xét"
+    },
+    "kpi": {
+      "transactions": "Giao dịch hôm nay",
+      "successful": "Đã ghi sổ",
+      "failed": "Thất bại hoặc bị từ chối",
+      "fraud": "Cảnh báo cần xử lý",
+      "fraudNote": "{{open}} mới · {{critical}} nghiêm trọng",
+      "frozen": "Tài khoản phong toả",
+      "volume": "Tổng chuyển hôm nay"
+    },
+    "accounts": {
+      "title": "Tài khoản",
+      "subtitle": "Tìm theo số tài khoản hoặc tên khách hàng. Phong toả chỉ chặn tiền chuyển đi.",
+      "filter": "Lọc tài khoản",
+      "search": "Số tài khoản hoặc tên",
+      "searchPh": "1000000001 hoặc Nguyễn",
+      "empty": "Hãy thử số tài khoản hoặc tên khác.",
+      "actions": "Thao tác",
+      "back": "Về danh sách tài khoản",
+      "account": "Tài khoản",
+      "overview": "Tài khoản",
+      "id": "Mã tài khoản",
+      "transactions": "Giao dịch của tài khoản"
+    },
+    "freeze": {
+      "action": "Phong toả",
+      "unfreezeAction": "Gỡ phong toả",
+      "title": "Phong toả tài khoản",
+      "unfreezeTitle": "Gỡ phong toả tài khoản",
+      "body": "Mọi lệnh chuyển tiền đi sẽ bị từ chối cho đến khi gỡ phong toả. Tiền chuyển đến vẫn được ghi có. Chủ tài khoản sẽ nhận được thông báo.",
+      "unfreezeBody": "Chủ tài khoản có thể chuyển tiền trở lại và sẽ nhận được thông báo.",
+      "reason": "Lý do",
+      "reasonHint": "Bắt buộc, 3–255 ký tự. Được ghi vào nhật ký kiểm toán.",
+      "reasonRule": "Vui lòng nhập lý do từ 3 đến 255 ký tự.",
+      "confirm": "Phong toả tài khoản",
+      "unfreezeConfirm": "Gỡ phong toả",
+      "frozen": "Đã phong toả tài khoản {{number}}.",
+      "unfrozen": "Tài khoản {{number}} đã hoạt động trở lại."
+    },
+    "limits": {
+      "title": "Hạn mức chuyển tiền",
+      "per": "Mỗi giao dịch",
+      "daily": "Mỗi ngày",
+      "save": "Lưu hạn mức",
+      "saved": "Đã cập nhật hạn mức.",
+      "positive": "Phải lớn hơn 0.",
+      "perAboveDaily": "Hạn mức mỗi giao dịch không được lớn hơn hạn mức ngày.",
+      "serverRule": "Máy chủ từ chối theo quy tắc hạn mức.",
+      "audited": "Thay đổi được ghi vào nhật ký kiểm toán kèm giá trị cũ và mới."
+    },
+    "customers": {
+      "title": "Khách hàng",
+      "subtitle": "Tìm theo tên, email hoặc số điện thoại.",
+      "search": "Tên, email hoặc số điện thoại",
+      "searchPh": "Trần, @demo, 0912…",
+      "empty": "Hãy thử một phần ngắn hơn của tên, email hoặc số điện thoại.",
+      "name": "Khách hàng",
+      "accounts": "Tài khoản",
+      "alerts": "Cảnh báo gian lận",
+      "noAlerts": "Khách hàng này chưa có cảnh báo nào.",
+      "userId": "Mã người dùng",
+      "back": "Về danh sách khách hàng"
+    },
+    "transactions": {
+      "title": "Giao dịch",
+      "subtitle": "Toàn bộ giao dịch của ngân hàng, kể cả các lệnh bị từ chối.",
+      "back": "Về danh sách giao dịch",
+      "one": "Giao dịch",
+      "createdBy": "Người tạo",
+      "id": "Mã giao dịch hệ thống"
+    },
+    "ledger": {
+      "title": "Bút toán sổ cái",
+      "type": "Bút toán",
+      "before": "Số dư trước",
+      "after": "Số dư sau",
+      "id": "Mã bút toán"
+    },
+    "recon": {
+      "title": "Đối soát",
+      "explain": "Đọc lại các bút toán của giao dịch, kiểm tra tổng Nợ bằng tổng Có và số bút toán khớp với trạng thái.",
+      "run": "Chạy đối soát",
+      "again": "Kiểm tra lại",
+      "balanced": "Cân đối: tổng Nợ bằng tổng Có",
+      "unbalanced": "Không cân đối: cần kiểm tra giao dịch này",
+      "entries": "Số bút toán (thực tế / kỳ vọng)",
+      "checkedAt": "Kiểm tra lúc {{time}}"
     }
   },
   "errors": {
@@ -473,5 +584,111 @@
     "preferences": "Hiển thị",
     "theme": "Giao diện",
     "prefsNote": "Số tiền luôn hiển thị theo kiểu Việt Nam (25.000.000 ₫); thời gian hiển thị theo giờ Việt Nam (UTC+7)."
+  },
+  "fraud": {
+    "title": "Cảnh báo gian lận",
+    "subtitle": "Các cảnh báo do bộ quy tắc tạo ra. Có thể sắp xếp theo mức rủi ro cao nhất.",
+    "headOpen": "{{count}} mới",
+    "headReview": "{{count}} đang xem xét",
+    "headCritical": "{{count}} nghiêm trọng",
+    "filters": {
+      "label": "Lọc cảnh báo",
+      "status": "Trạng thái",
+      "level": "Mức rủi ro"
+    },
+    "col": {
+      "risk": "Rủi ro",
+      "transaction": "Giao dịch",
+      "customer": "Khách hàng",
+      "amount": "Số tiền",
+      "status": "Trạng thái",
+      "created": "Thời gian tạo"
+    },
+    "empty": "Không có cảnh báo phù hợp.",
+    "emptyBody": "Xoá bộ lọc để xem toàn bộ cảnh báo.",
+    "back": "Về danh sách cảnh báo",
+    "alert": "Cảnh báo gian lận",
+    "raised": "Tạo lúc {{time}}",
+    "rules": "Quy tắc bị kích hoạt",
+    "rule": "Quy tắc",
+    "score": "Điểm",
+    "total": "Điểm rủi ro",
+    "scale": "Thang điểm: 0–29 thấp · 30–59 trung bình · 60–79 cao · từ 80 nghiêm trọng. Cảnh báo được tạo từ 30 điểm.",
+    "ruleName": {
+      "HIGH_AMOUNT": "Số tiền lớn",
+      "HIGH_FREQUENCY": "Tần suất cao",
+      "DAILY_VELOCITY": "Tổng chuyển trong ngày cao",
+      "NEW_BENEFICIARY": "Người nhận mới"
+    },
+    "ruleDesc": {
+      "HIGH_AMOUNT": "Số tiền từ 100.000.000 ₫ trở lên.",
+      "HIGH_FREQUENCY": "Khách hàng chuyển đi hơn 5 lệnh trong vòng 60 giây.",
+      "DAILY_VELOCITY": "Tổng tiền chuyển đi trong ngày của khách hàng vượt 200.000.000 ₫.",
+      "NEW_BENEFICIARY": "Lần đầu chuyển đến tài khoản này, số tiền từ 10.000.000 ₫."
+    },
+    "transaction": "Giao dịch",
+    "from": "Bên chuyển",
+    "to": "Bên nhận",
+    "occurred": "Thời điểm phát sinh",
+    "timeline": "Diễn biến",
+    "system": "Hệ thống",
+    "customer": "Khách hàng và tài khoản",
+    "freeze": "Phong toả tài khoản",
+    "freezeReason": "Cảnh báo gian lận {{ref}}",
+    "review": {
+      "title": "Xử lý",
+      "decision": "Quyết định",
+      "option": {
+        "UNDER_REVIEW": "Nhận xem xét",
+        "APPROVED": "Xác nhận hợp lệ",
+        "REJECTED": "Xác nhận gian lận",
+        "CLOSED": "Đóng cảnh báo"
+      },
+      "hint": {
+        "UNDER_REVIEW": "Bạn đang kiểm tra; không cần ghi chú.",
+        "APPROVED": "Khách hàng đã xác nhận giao dịch.",
+        "REJECTED": "Đã xác định gian lận. Cân nhắc phong toả tài khoản.",
+        "CLOSED": "Không cần xử lý thêm."
+      },
+      "note": "Ghi chú",
+      "notePh": "Bạn đã kiểm tra gì, với ai?",
+      "required": "Bắt buộc",
+      "pick": "Vui lòng chọn một quyết định.",
+      "noteRequired": "Quyết định này cần có ghi chú.",
+      "submit": "Ghi nhận quyết định",
+      "saved": "Cảnh báo đã chuyển sang “{{status}}”.",
+      "terminal": "Cảnh báo đã đóng, không thể thay đổi thêm."
+    }
+  },
+  "audit": {
+    "title": "Nhật ký kiểm toán",
+    "subtitle": "Bản ghi chỉ-thêm của mọi sự kiện bảo mật và tài chính từ tất cả dịch vụ.",
+    "subtitleStaff": "Sự kiện về tài khoản, giao dịch và gian lận. Bản ghi đăng nhập và địa chỉ IP chỉ kiểm toán viên được xem.",
+    "filter": "Lọc nhật ký",
+    "empty": "Hãy mở rộng khoảng thời gian hoặc xoá bộ lọc.",
+    "record": "Bản ghi kiểm toán",
+    "col": {
+      "time": "Thời gian",
+      "action": "Hành động",
+      "actor": "Người thực hiện",
+      "resource": "Đối tượng",
+      "outcome": "Kết quả"
+    },
+    "outcome": {
+      "SUCCESS": "Thành công",
+      "FAILURE": "Thất bại"
+    },
+    "filterByCorrelation": "Xem mọi sự kiện của yêu cầu này",
+    "service": "Dịch vụ nguồn",
+    "ip": "Địa chỉ IP",
+    "eventId": "Mã sự kiện",
+    "received": "Thời gian nhận",
+    "diff": "Thay đổi",
+    "field": "Trường",
+    "before": "Trước",
+    "after": "Sau",
+    "changed": "đã thay đổi",
+    "noChanges": "Sự kiện này không kèm dữ liệu trước/sau.",
+    "appendOnly": "Bản ghi kiểm toán không thể sửa hoặc xoá."
   }
 }

@@ -73,7 +73,7 @@ export type DB = {
   loginFailures: Record<string, number[]>
 }
 
-export const DB_VERSION = 3
+export const DB_VERSION = 4
 const STORAGE_KEY = 'sb.mock.db'
 
 export function emptyDb(now: Date): DB {

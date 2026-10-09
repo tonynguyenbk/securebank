@@ -256,7 +256,7 @@ export const handlers = [
     db.customers.push(customer)
     const account = openAccount(db, req.ctx, customer.id)
     audit(db, req.ctx, { actor: null, action: 'ACCOUNT_OPENED', resourceType: 'ACCOUNT', resourceId: account.id, sourceService: 'banking-core-service', after: { accountNumber: account.accountNumber, currency: 'VND', status: 'ACTIVE' } })
-    notify(db, req.ctx, user.id, ['IN_APP'], 'WELCOME', { accountNumber: account.accountNumber })
+    notify(db, req.ctx, user.id, ['IN_APP'], 'WELCOME', { fullName: user.fullName, username: user.username })
     return json(req, v.userView(user), 201)
   }, true),
 

@@ -218,7 +218,7 @@ function base(now: Date, openings: Record<string, number>, ctxBase: Omit<Ctx, 'n
       openAccount(db, ctx, p.customerId, { id: p.accountId, number: p.accountNumber, balance: openings[p.key] ?? 0 })
       audit(db, { ...ctx, now: joined }, { actor: user, action: 'USER_REGISTERED', resourceType: 'USER', resourceId: user.id, sourceService: 'identity-service', after: { username: user.username, roles: 'CUSTOMER' } })
       audit(db, ctx, { actor: null, action: 'ACCOUNT_OPENED', resourceType: 'ACCOUNT', resourceId: p.accountId, sourceService: 'banking-core-service', after: { accountNumber: p.accountNumber, currency: 'VND', status: 'ACTIVE' } })
-      notify(db, ctx, p.userId, ['IN_APP'], 'WELCOME', { accountNumber: p.accountNumber })
+      notify(db, ctx, p.userId, ['IN_APP'], 'WELCOME', { fullName: p.fullName, username: p.username })
     }
   }
   db.nextAccountNumber = 1000000107
